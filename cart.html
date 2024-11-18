@@ -55,26 +55,78 @@
         </div>
 
         <div class="right-content">
-            <h1>Giỏ Hàng</h1>
+            <div class="cart-section hidden">
+                <h1>Giỏ Hàng</h1>
 
-            <div class="product-table-header">
-                <div><input id="checkbox-all-delOrbuy" type="checkbox" onclick="chonTatCa()"></div>
-                <div class="text-size product-descript">Sản Phẩm</div>
-                <div class="text-size other">Đơn Giá</div>
-                <div class="text-size other">Số Lượng</div>
-                <div class="text-size other">Số Tiền</div>
+                <div class="product-table-header">
+                    <div><input id="select-all" type="checkbox" onclick="chonTatCa()"></div>
+                    <div class="text-size product-descript">Sản Phẩm</div>
+                    <div class="text-size other">Đơn Giá</div>
+                    <div class="text-size other">Số Lượng</div>
+                    <div class="text-size other">Số Tiền</div>
+                </div>
+
+                <!-- Sản phẩm trong đơn hàng -->
+                <div class="orderItems-list">
+
+                </div>
             </div>
 
-            <!-- Sản phẩm trong đơn hàng -->
-            <div class="orderItems-list">
 
+            <div class="checkout-section">
+                <h1>Thanh toán</h1>
+
+                <div class="address-section">
+                    <div class="title-address">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <h2>Địa Chỉ Nhận Hàng</h2>
+                    </div>
+
+                    <div class="delive-info">
+                        <div class="buyer-info">Tăng Huỳnh Quốc Khánh (+84) 886******</div>
+                        <div class="address-info">***/**, Đường *****, Phường *, Quận *, TP. Hồ Chí Minh</div>
+                        <button class="change-address">Thay Đổi</button>
+                    </div>
+                </div>
+
+                <div class="product-is-payed">
+                    <div class="product-table-header">
+                        <div class="text-size product-descript">Sản Phẩm</div>
+                        <div class="text-size other">Đơn Giá</div>
+                        <div class="text-size other">Số Lượng</div>
+                        <div class="text-size other">Số Tiền</div>
+                    </div>
+
+                    <div class="orderItems-list">
+
+                    </div>
+                </div>
+
+                <div class="payment-method">
+                    <div class="payment">
+                        <div class="text-size payment-title">Phương thức thanh toán</div>
+                        <div class = "payment-option">
+                            <div>Chọn phương thức thanh toán</div>
+                            <select>
+                                <option value="1">Thanh toán khi nhận hàng</option>
+                                <option value="2">Chuyển khoản</option>
+                                <option value="3">Thanh toán qua thẻ</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button style="width: 50px; height:  50px;" id="back-cart-shoppping" onclick="quayLaiGioHang()">Quay
+                        lai</button>
+                </div>
+
+                <br>
+                
             </div>
 
-
-            <!-- 2 nút xóa và thanh toán -->
-            <div class="footer-cart-actions">
-                <button class="text-size delete">Xóa</button>
-                <button class="text-size payment">Thanh toán</button>
+            <!-- Nút xóa và thanh toán -->
+            <div class="footer-cart-actions hidden">
+                <button class="text-size delete" onclick="xoaKhoiGioHang()">Xóa</button>
+                <button class="text-size buy" onclick="muaHang()">Mua hàng</button>
             </div>
 
 
@@ -82,126 +134,7 @@
 
             </div>
         </div>
-        <script>
-            // Thay đổi lựa chọn trong left content
-            const productInCart = document.querySelector('.product-in-cart');
-            const orderHistory = document.querySelector('.orderHistory');
-            const statusSection = document.querySelector('.status-section');
-
-            function thayDoiLuaChonLeftMenu(activeElement, inactiveElement, showStatus = false) {
-                activeElement.classList.add('selected');
-                inactiveElement.classList.remove('selected');
-                statusSection.style.display = showStatus ? 'block' : 'none';
-            }
-
-            productInCart.addEventListener('click', () => {
-                thayDoiLuaChonLeftMenu(productInCart, orderHistory, false);
-            });
-
-            orderHistory.addEventListener('click', () => {
-                thayDoiLuaChonLeftMenu(orderHistory, productInCart, true);
-            });
-
-            // Thay đổi lựa chọn trong lịch sử giao hàng
-            const statusItems = [
-                document.querySelector('.status-success'),
-                document.querySelector('.status-pending'),
-                document.querySelector('.status-canceled')
-            ]
-
-            function thayDoiLuaChonHistoryLM(activeElement) {
-                statusItems.forEach(item => {
-                    if (item === activeElement) {
-                        item.classList.add('selected-orderHistory');
-                    }
-                    else item.classList.remove('selected-orderHistory');
-                })
-            }
-
-            statusItems.forEach(item => {
-                item.addEventListener('click', () => {
-                    thayDoiLuaChonHistoryLM(item);
-                })
-            })
-            // Thêm bớt sản phẩm và tính tiền tổng của 1 sản phẩm
-            function themBotSanPham(btn) {
-                const quantityItem = btn.parentElement.querySelector('input[id = "quantity"]');
-                let currentQuantity = parseInt(quantityItem.value);
-
-                const bookName = btn.parentElement.parentElement.querySelector('.product-descript a').textContent;
-                const book = books.find(b => b.Book_name === bookName);
-                const price = book.Book_price;
-
-                if (btn.classList.contains('increase-btn')) {
-                    quantityItem.value = currentQuantity + 1;
-                } else if (btn.classList.contains('decrease-btn') && currentQuantity > 1) {
-                    quantityItem.value = currentQuantity - 1;
-                }
-                let totalPrice = quantityItem.value * price;
-                btn.parentElement.parentElement.querySelector('.text-size.other:last-child').textContent = totalPrice.toLocaleString('vi-VN');
-            }
-
-            // Làm việc với mảng chứa các sách
-            var books = [
-                { Book_ID: 100, Book_category: 'Triết lý', Book_img: '/assets/images/sanpham33.webp', Book_name: 'con đường chuyển hóa', Book_price: 200000 },
-                { Book_ID: 101, Book_category: 'Tình cảm', Book_img: '/assets/images/sanpham43.webp', Book_name: 'ngày xưa có 1 chuyện tình', Book_price: 150000 },
-                { Book_ID: 102, Book_category: 'Học tập', Book_img: '/assets/images/sanpham33.jpg', Book_name: 'làm sao học ít hiểu nhiều', Book_price: 100000 },
-            ]
-
-            function displayOrderItems() {
-                var s = "";
-                for (let i = 0; i < books.length; i++) {
-                    s += `
-                <div class="order-item">
-                    <div><input class="checkbox-delOrbuy" type="checkbox"></div>
-                    <div class="text-size product-descript">
-                        <img src="` + books[i].Book_img + `">
-                        <a>`+ books[i].Book_name + `</a>
-                    </div>
-                    <div class="text-size other">` + books[i].Book_price.toLocaleString('vi-VN') + `</div>
-                    <div class="text-size other alter-quantity">
-                        <button class="text-size decrease-btn" onclick = "themBotSanPham(this)">-</button>
-                        <input type="number" id="quantity" value="1"  readonly>
-                        <button class="text-size increase-btn" onclick = "themBotSanPham(this)">+</button>
-                    </div>
-                    <div class="text-size other">
-                        <span class = "total-price">0</span>
-                    </div>
-
-                </div>`
-                }
-                document.querySelector('.orderItems-list').innerHTML = s;
-            }
-
-            displayOrderItems();
-
-            // Chọn từng sản phẩm hoặc tất cả để xóa hoặc mua
-            const checkboxAllDelOrBuy = document.getElementById('checkbox-all-delOrbuy');
-            const checkboxDelOrBuy = document.getElementsByClassName('checkbox-delOrbuy');
-
-            function chonTatCa() {
-                for (const checkbox of checkboxDelOrBuy) {
-                    checkbox.checked = checkboxAllDelOrBuy.checked;
-                }
-            }
-
-            function nangCapChonTatCa() {
-                let allChecked = true;
-                for (const checkbox of checkboxDelOrBuy) {
-                    if (!checkbox.checked) {
-                        allChecked = false;
-                        break;
-                    }
-                }
-                checkboxAllDelOrBuy.checked = allChecked;
-            }
-
-            for (const checkbox of checkboxDelOrBuy) {
-                checkbox.addEventListener('click', nangCapChonTatCa);
-            }
-
-        </script>
-
+        <script src="cartJS.js"></script>
     </div>
 
 
