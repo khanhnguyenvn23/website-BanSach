@@ -1,13 +1,15 @@
 // Hàm khởi tạo sự kiện click cho menu
 function initMenuEvents() {
     const menuItems = document.querySelectorAll('.nav_left-menu');
-    menuItems.forEach(item => {
-        item.addEventListener('click', function () {
-            menuItems.forEach(i => i.classList.remove('active'));
+    for (let i = 0; i < menuItems.length; i++) {
+        menuItems[i].addEventListener('click', function () {
+            for (let j = 0; j < menuItems.length; j++) {
+                menuItems[j].classList.remove('active');
+            }
             this.classList.add('active');
             toggleMainContent(this.id);
         });
-    });
+    }
 }
 
 // Hàm ẩn/hiện nội dung chính
@@ -20,22 +22,16 @@ function toggleMainContent(clickedId) {
     }
 }
 
-// Hàm hiển thị danh sách đơn hàng
-function hienThiDonHang() {
+// Hàm hiển thị đơn hàng
+function hienThiDonHang(orderList) {
     const tbody = document.getElementById("orderTableBody");
     tbody.innerHTML = "";
 
-    // Lấy danh sách đơn hàng từ localStorage
-    const orderList = JSON.parse(localStorage.getItem("orderList")) || [];
-    const filteredOrders = locDonHangtheoNgay(orderList, filterFromDate, filterToDate);
+    if (!orderList) {
+        orderList = JSON.parse(localStorage.getItem("orderList")) || [];
+    }
 
-    //Gán OrderID về lại local
-    filteredOrders.forEach((order, index) => {
-        order.OrderID = index + 1; 
-    });
-    localStorage.setItem("orderList", JSON.stringify(orderList));
-
-    if (filteredOrders.length === 0) {
+    if (orderList.length === 0) {
         tbody.innerHTML = `
             <tr>
                 <td colspan="6" style="text-align: center;">Không có đơn hàng</td>
@@ -44,54 +40,58 @@ function hienThiDonHang() {
         return;
     }
 
-    filteredOrders.forEach((order, index) => {
+    for (let i = 0; i < orderList.length; i++) {
+        const order = orderList[i];
         const tr = document.createElement("tr");
         tr.innerHTML = `
-            <td>${index + 1}</td> <!-- Hiển thị orderId tự động -->
+            <td>${order.OrderID}</td>
             <td>${order.FullName}</td>
             <td>${order.OrderDate}</td>
             <td>${order.OrderItems.reduce((total, item) => total + item.price * item.quantity, 0).toLocaleString('vi-VN')} đ</td>
             <td class="centering">
                 <select class="status-dropdown" onchange="changeSelectColor(this)">
-                    <option value="Chưa xử lý" ${order.Status === "Chưa xác nhận" ? "selected" : ""}>Chưa xử lý</option>
-                    <option value="Đã xử lý" ${order.Status === "Đã xử lý" ? "selected" : ""}>Đã xử lý</option>
-                    <option value="Đã giao" ${order.Status === "Đã giao" ? "selected" : ""}>Đã giao</option>
-                    <option value="Đã hủy" ${order.Status === "Đã hủy" ? "selected" : ""}>Đã hủy</option>
+                    <option value="0" ${order.Status === 0 ? "selected" : ""}>Chưa xử lý</option>
+                    <option value="1" ${order.Status === 1 ? "selected" : ""}>Đã xử lý</option>
+                    <option value="2" ${order.Status === 2 ? "selected" : ""}>Đã giao</option>
+                    <option value="3" ${order.Status === 3 ? "selected" : ""}>Đã hủy</option>
                 </select>
             </td>
-            <td class="centering"><button class="detail-button" onclick="xemChiTiet(${index})">Xem</button></td>
+            <td class="centering"><button class="detail-button" onclick="xemChiTiet(${order.OrderID - 1})">Xem</button></td>
         `;
         tbody.appendChild(tr);
 
         const dropdown = tr.querySelector(".status-dropdown");
-        changeSelectColor(dropdown); 
+        changeSelectColor(dropdown);
 
-        // Thay đổi trạng thái
         dropdown.addEventListener("change", () => {
-            updateOrderStatus(orderList, index, dropdown.value);
+            updateOrderStatus(orderList, order.OrderID - 1, parseInt(dropdown.value));
         });
-    });
+    }
 }
-
 
 // Hàm cập nhật trạng thái đơn hàng
 function updateOrderStatus(orderList, index, newStatus) {
     if (orderList[index].Status !== newStatus) {
         orderList[index].Status = newStatus;
-
         localStorage.setItem("orderList", JSON.stringify(orderList));
-        
-        console.log(`Cập nhật trạng thái đơn hàng ${index + 1} thành công: ${newStatus}`);
-        alert(`Cập nhật trạng thái đơn hàng ${index + 1} thành công thành: ${newStatus}`);
+        console.log(`Cập nhật trạng thái đơn hàng ${orderList[index].OrderID} thành công: ${newStatus}`);
+        alert(`Cập nhật trạng thái đơn hàng ${orderList[index].OrderID} thành công thành: ${getStatusLabel(newStatus)}`);
     }
 }
 
-
-
+// Hàm chuyển đổi trạng thái số thành chuỗi 
+function getStatusLabel(status) {
+    switch (status) {
+        case 0: return "Chưa xử lý";
+        case 1: return "Đã xử lý";
+        case 2: return "Đã giao";
+        case 3: return "Đã hủy";
+        default: return "Không xác định";
+    }
+}
 
 // Hàm hiển thị chi tiết đơn hàng
 function xemChiTiet(index) {
-    
     const orderList = JSON.parse(localStorage.getItem("orderList")) || [];
     const order = orderList[index];
 
@@ -105,47 +105,39 @@ function xemChiTiet(index) {
     const content = document.getElementById("orderDetailContent");
 
     let details = `
-        <p><strong>Mã đơn hàng:</strong> ${index + 1}</p> <!-- Hiển thị orderId tự động -->
+        <p><strong>Mã đơn hàng:</strong> ${index + 1}</p> 
         <p><strong>Tên khách hàng:</strong> ${order.FullName}</p>
         <p><strong>Số điện thoại:</strong> ${order.Sdt}</p>
         <p><strong>Địa chỉ giao hàng:</strong> ${order.Address}</p>
         <p><strong>Ngày đặt:</strong> ${order.OrderDate}</p>
-        <p><strong>Trạng thái:</strong> ${order.Status}</p>
+        <p><strong>Trạng thái:</strong> ${getStatusLabel(order.Status)}</p>
         <h4>Danh sách sản phẩm:</h4>
         <ul>
     `;
 
-    // Hiển thị danh sách sản phẩm
-    order.OrderItems.forEach((item, idx) => {
+    order.OrderItems.forEach((item) => {
         details += `<li>${item.name} - Số lượng: ${item.quantity} - Giá: ${item.price.toLocaleString('vi-VN')} đ</li>`;
     });
 
     const totalPrice = order.OrderItems.reduce((total, item) => total + item.price * item.quantity, 0);
-
     details += `
         </ul>
         <p><strong>Tổng tiền:</strong> ${totalPrice.toLocaleString('vi-VN')} đ</p>
     `;
 
-    // Cập nhật nội dung modal
     content.innerHTML = details;
-
-    // Hiển thị modal
     modal.style.display = "block";
 
-    // Đóng modal khi nhấn vào nút đóng
     closeModal.addEventListener("click", () => {
         modal.style.display = "none";
     });
 
-    // Đóng modal khi nhấn ra ngoài modal
     window.addEventListener("click", event => {
         if (event.target === modal) {
             modal.style.display = "none";
         }
     });
 }
-
 
 // Hàm mở/đóng modal lọc
 function initFilterModal() {
@@ -156,6 +148,7 @@ function initFilterModal() {
 
     filterBtn.addEventListener("click", () => filterModal.style.display = "block");
     closeModal.addEventListener("click", () => filterModal.style.display = "none");
+
     window.addEventListener("click", event => {
         if (event.target === filterModal) {
             filterModal.style.display = "none";
@@ -164,90 +157,123 @@ function initFilterModal() {
 
     confirmFilter.addEventListener("click", () => {
         filterModal.style.display = "none";
-        filterFromDate = document.getElementById("fromDate").value;
-        filterToDate = document.getElementById("toDate").value;
-        hienThiDonHang();
+        filterOrders();
     });
 }
 
-// Biến lưu trữ ngày lọc
 let filterFromDate = null;
 let filterToDate = null;
 
 // Hàm lọc danh sách đơn hàng theo ngày
-function locDonHangtheoNgay(orderList, fromDate, toDate) {
-    console.log("From Date:", fromDate, "To Date:", toDate);
-
-    // Nếu không có ngày bắt đầu hoặc kết thúc, trả về tất cả đơn hàng
+function locDonHangTheoNgay(orderList, fromDate, toDate) {
     if (!fromDate || !toDate) return orderList;
 
-    // Chuyển đổi các ngày thành đối tượng Date để so sánh
-    const from = convertToDateFormat(fromDate, true); // Chuyển đổi fromDate (yyyy/mm/dd)
-    const to = convertToDateFormat(toDate, true); // Chuyển đổi toDate (yyyy/mm/dd)
+    const from = convertToDateFormat(fromDate, true);
+    const to = convertToDateFormat(toDate, true);
+    const filteredOrders = [];
 
-    return orderList.filter(order => {
-        const orderDate = convertToDateFormat(order.OrderDate); // Lấy OrderDate từ đơn hàng (dd/mm/yyyy)
-        return orderDate >= from && orderDate <= to;
-    });
+    for (let i = 0; i < orderList.length; i++) {
+        const order = orderList[i];
+        const orderDate = convertToDateFormat(order.OrderDate);
+        if (orderDate >= from && orderDate <= to) {
+            filteredOrders.push(order);
+        }
+    }
+
+    return filteredOrders;
+}
+
+// Hàm lọc danh sách đơn hàng theo trạng thái
+function locDonHangTheoTrangThai(orderList, selectedStatus) {
+    if (selectedStatus === "" || selectedStatus === undefined) {
+        return orderList;
+    }
+    selectedStatus = parseInt(selectedStatus);
+    const filteredOrders = [];
+
+    for (let i = 0; i < orderList.length; i++) {
+        if (orderList[i].Status === selectedStatus) {
+            filteredOrders.push(orderList[i]);
+        }
+    }
+
+    return filteredOrders;
 }
 
 
-// Hàm định dạng ngày theo dd/mm/yyyy
 
-function formatOrderDate(orderDate) {
-    if (!orderDate) return ''; 
-    const [month, day, year] = orderDate.split('/');
-    return `${day}/${month}/${year}`; // Đảm bảo hiển thị theo dd/mm/yyyy
+// Hàm lọc và hiển thị đơn hàng
+function filterOrders() {
+    const orderList = JSON.parse(localStorage.getItem("orderList")) || [];
+    const selectedStatus = document.getElementById("statusFilter").value;
+    const filterFromDate = document.getElementById("fromDate").value;
+    const filterToDate = document.getElementById("toDate").value;
+    let filteredOrders = locDonHangTheoTrangThai(orderList, selectedStatus);
+    filteredOrders = locDonHangTheoNgay(filteredOrders, filterFromDate, filterToDate);
+    hienThiDonHang(filteredOrders);
 }
-
 
 // Hàm chuyển đổi ngày để đúng form so sánh
 function convertToDateFormat(dateString, isFromDate = false) {
     if (isFromDate) {
         const [year, month, day] = dateString.split('/');
-        return new Date(`${month}/${day}/${year}`); 
+        return new Date(`${month}/${day}/${year}`);
     } else {
-        // Chuyển đổi từ dd/mm/yyyy (orderDate) thành đối tượng Date
         const [day, month, year] = dateString.split('/');
-        return new Date(`${month}/${day}/${year}`); 
+        return new Date(`${month}/${day}/${year}`);
     }
 }
 
+// Hàm cập nhật OrderID cho các đơn hàng
+function updateOrderID(orderList) {
+    for (let i = 0; i < orderList.length; i++) {
+        const order = orderList[i];
+        if (!order.OrderID || order.OrderID === "N/A") {
+            order.OrderID = i + 1;
+        }
+    }
+    localStorage.setItem("orderList", JSON.stringify(orderList));
+}
 
-
-// Khởi tạo tất cả chức năng khi DOMContentLoaded
+// Khởi tạo tất cả chức năng khi Load
 document.addEventListener("DOMContentLoaded", () => {
     initMenuEvents();
     initFilterModal();
-    hienThiDonHang();
+    let orderList = JSON.parse(localStorage.getItem("orderList")) || [];
+    updateOrderID(orderList);
+    hienThiDonHang(orderList);
 });
+
+
 
 // Thay đổi màu chữ theo trạng thái
 function changeSelectColor(selectElement) {
-    const selectedValue = selectElement.value;
+    const selectedValue = parseInt(selectElement.value);
+    let color = "black";
 
-    // Xác định màu chữ dựa trên giá trị đã chọn
-    let color = 'black'; // Màu mặc định
-
-    if (selectedValue === 'Chưa xử lý') {
-        color = 'orange'; 
-    } else if (selectedValue === 'Đã xử lý') {
-        color = 'blue'; 
-    } else if (selectedValue === 'Đã giao') {
-        color = 'green'; 
-    } else if (selectedValue === 'Đã hủy') {
-        color = 'red'; 
+    switch (selectedValue) {
+        case 0: color = "orange"; break;
+        case 1: color = "blue"; break;
+        case 2: color = "green"; break;
+        case 3: color = "red"; break;
     }
 
-    // Cập nhật màu chữ của phần tử select
     selectElement.style.color = color;
 }
 
-window.onload = function() {
-    const selectElement = document.querySelector('.status-dropdown');
-    const selectedValue = selectElement.value;
-    changeSelectColor(selectElement);
-};
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
