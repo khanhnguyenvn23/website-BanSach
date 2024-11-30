@@ -38,15 +38,15 @@ for (let i = 0; i < menuItems.length; i++) {
         let contentHTML = `
             <h1 class="centering">DANH SÁCH ĐƠN HÀNG</h1>
             <div class="filter" id="filter">
-                <button id="filterBtn" class="filter-btn">Lọc</button>
+                <button id="filterBtn" class="filter-btn"><i class="fa-solid fa-filter"></i> Lọc</button>
             </div>
             <table id="orderTable">
                 <thead>
                     <tr>
-                        <th>Mã đơn</th>
+                        <th class="centering">Mã đơn</th>
                         <th>Khách hàng</th>
-                        <th>Ngày đặt</th>
-                        <th>Tổng tiền</th>
+                        <th class="centering">Ngày đặt</th>
+                        <th class="centering">Tổng tiền</th>
                         <th class="centering">Trạng thái</th>
                         <th class="centering">Chi tiết</th>
                     </tr>
@@ -66,10 +66,10 @@ for (let i = 0; i < menuItems.length; i++) {
                 const totalAmount = order.OrderItems.reduce((total, item) => total + item.price * item.quantity, 0).toLocaleString('vi-VN');
                 contentHTML += `
                     <tr>
-                        <td>${order.OrderID}</td>
-                        <td>${order.FullName}</td>
-                        <td>${order.OrderDate}</td>
-                        <td>${totalAmount} đ</td>
+                        <td class="centering">${order.OrderID}</td>
+                        <td >${order.FullName}</td>
+                        <td class="centering">${order.OrderDate}</td>
+                        <td class="centering">${totalAmount} đ</td>
                         <td class="centering">
                             <select class="status-dropdown" data-order-id="${order.OrderID}" onchange="handleStatusChange(this)">
                                 <option value="0" ${order.Status === "0" ? "selected" : ""}>Chưa xử lý</option>
@@ -198,7 +198,7 @@ function xemChiTiet(index) {
         <p><strong>Địa chỉ giao hàng:</strong> ${order.Address}</p>
         <p><strong>Ngày đặt:</strong> ${order.OrderDate}</p>
         <p><strong>Trạng thái:</strong> ${getStatusLabel(order.Status)}</p>
-        <h4>Danh sách sản phẩm:</h4>
+        <h4><strong>Danh sách sản phẩm:</strong></h4>
         <ul>
     `;
 
