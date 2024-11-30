@@ -18,12 +18,26 @@
           <img src="assets/images/logo.png" alt="logo" />
         </div>
         <div class="search-bar">
-          <input type="text" placeholder="Nhập từ khoá..." />
-          <button><i class="fas fa-search"></i></button>
-      <!--đưa lên-->    <button class="filter-btn"><i class="fa-solid fa-filter"></i><span>Lọc</span></button>
-        </div>
+            <input type="text" id="searchh" placeholder="Nhập từ khoá..." />
+            <button><i class="fas fa-search"></i></button>
+            <button class="filter-btn"><i class="fa-solid fa-filter"></i><span>Lọc</span></button>
+            <div class="search-dropdown" id="search-results">
+              <div class="search-product">
+                <i class="fa-solid fa-chart-line"></i>
+                Sản phẩm
+              </div>
+              <div id="show-product">
+              </div>
+            </div>
+          </div>
         <div class="user-menu">
-          <a href="auth.html" id="login-link"><i class="fas fa-user"></i> Tài khoản</a>
+            <div class="account-dropdown">
+                <a href="#" id="login-link"><i class="fas fa-user"></i> Tài khoản</a>
+                <div class="dropdown-content">
+                    <a href="#" id="logout-link"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+                    <a href="#" class="user-btn" id="account-info-link"><i class="fa-solid fa-circle-user"></i> Thông tin tài khoản</a>
+                </div>
+            </div>
           <a href="#" id="logout-link" style="display: none;"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
           <a href="#" class="user-btn" id="account-info-link" style="display: none;"><i class="fa-solid fa-circle-user"></i> Thông tin tài khoản</a>
           <a href="#"><i class="fas fa-shopping-cart"></i> Giỏ hàng</a>
@@ -133,6 +147,7 @@
     <img class="thanhtoan" src="/assets/images/thanhtoan.webp" alt="">
     <img class="thanhtoan2" src="/assets/images/thanhtoan2.webp" alt="">
 </div></div>
+<!-- Đăng nhập đăng ký -->
 <div class="modal">
     <div class="login-container">
         <div class="close-btn">&times;</div>
@@ -271,8 +286,8 @@
       </div>
   </div>
 </div>
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script src="javascirpt.js"></script>
-    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script src="main.js"></script>
 </body>
 </html>

@@ -268,7 +268,7 @@ function showproduct (page,arrdisplay1){
                 <i class="fa-solid fa-truck"></i>
                 <div class="freeship">Freeship</div>
             </div>
-            <div class="add-cart" onclick="displayinfo(${arrdisplay1[i].productId})">Thêm vào giỏ</div>
+            <div class="add-cart" onclick="displayinfo(${arrdisplay1[i].productId})">xem chi tiết</div>
         </div>`;
         }
         renderproduct.innerHTML=s;
@@ -324,33 +324,57 @@ function findObjectByProperty(objects, property, value) {
     return null; // Trả về null nếu không tìm thấy
 }
 
-function displayinfo(productid) {
-    // Lấy phần tử với id để display lên
-    const productinfo = document.getElementById('showinfoproduct');
-    productinfo.style.display = 'grid';
-    productinfo.innerHTML='';
-    const result =findObjectByProperty(productsinfo,"productId",productid);
-            productinfo.innerHTML=` <div class="productinfo-img"> <img src="${arrProducts[productid-1].src}" alt="" class="info-img"></div>
-    <div class="productinfo-info">
-        <div class="info1 name1">${arrProducts[productid-1].name}</div>
-        <div class="info1 author"><i class="fa-solid fa-tag taginfo"></i>Tác giả: ${result.author}</div>
-        <div class="info1 price1">${arrProducts[productid-1].price.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'})}</div>
-        <div class="info1 content1"> ${result.content}</div>
-        <div class="camket"><i class="fa-solid fa-file-shield"></i>Nhận sản phẩm như mô tả.Thông tin thẻ của bạn được bảo mật và không được chia sẻ với người bán.</div>
-    </div>
-    <div class="addtocart1">thêm vào giỏ</div>
-    <div class="closeinfo" id="close1"><i class="fa-solid fa-xmark"></i></div>`;
-    const closeButton = document.getElementById('close1');
-    // Đảm bảo nút 'close' đã tồn tại trong DOM và sau đó thêm sự kiện
-    if (closeButton != null) {
-        closeButton.addEventListener('click', function() {
-            // Khi click vào nút 'close', ẩn phần tử chứa thông tin sản phẩm
-            productinfo.style.display = 'none';
-        });
-    } else {
-        console.log('Nút Close không tìm thấy');
-    }
-}
+// function displayinfo(productid) {
+//     // Lấy phần tử với id để display lên
+//     const productinfo = document.getElementById('showinfoproduct');
+//     productinfo.style.display = 'grid';
+//     productinfo.innerHTML='';
+//     const result =findObjectByProperty(productsinfo,"productId",productid);
+//             productinfo.innerHTML=` <div class="productinfo-img"> <img src="${arrProducts[productid-1].src}" alt="" class="info-img"></div>
+//     <div class="productinfo-info">
+//         <div class="info1 name1">${arrProducts[productid-1].name}</div>
+//         <div class="info1 author"><i class="fa-solid fa-tag taginfo"></i>Tác giả: ${result.author}</div>
+//         <div class="info1 price1">${arrProducts[productid-1].price.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'})}</div>
+//         <div class="info1 content1"> ${result.content}</div>
+//         <div class="camket"><i class="fa-solid fa-file-shield"></i>Nhận sản phẩm như mô tả.Thông tin thẻ của bạn được bảo mật và không được chia sẻ với người bán.</div>
+//     </div>
+//     <div class="addtocart1" id="addtocart1">thêm vào giỏ</div>
+//     <div class="closeinfo" id="close1"><i class="fa-solid fa-xmark"></i></div>`;
+//     const closeButton = document.getElementById('close1');
+//     // Đảm bảo nút 'close' đã tồn tại trong DOM và sau đó thêm sự kiện
+//     if (closeButton != null) {
+//         closeButton.addEventListener('click', function() {
+//             // Khi click vào nút 'close', ẩn phần tử chứa thông tin sản phẩm
+//             productinfo.style.display = 'none';
+//         });
+//     } else {
+//         console.log('Nút Close không tìm thấy');
+//     }
+    
+//     const hieuungthemvaogio = document.getElementById('addtocart1');
+   
+//     // Đảm bảo nút 'close' đã tồn tại trong DOM và sau đó thêm sự kiện
+//     if (hieuungthemvaogio != null) {
+//         hieuungthemvaogio.addEventListener('click', function() {
+//             // Kiểm tra trạng thái hiện tại của phần tử
+//             if (addtocart1.style.transform === "scale(1.07)") {
+//                 // Nếu đã phóng to, thu nhỏ lại
+//                 addtocart1.style.transition = "all 0.01s ease";
+//                 addtocart1.style.transform = "scale(1)";  // Thu nhỏ về kích thước ban đầu
+//             } else {
+//                 // Nếu chưa phóng to, phóng to
+//                 addtocart1.style.transition = "all 0.01s ease";
+//                 addtocart1.style.transform = "scale(1.07)";  // Phóng to 1.05 lần
+//             }
+//             const userAccount = localStorage.getItem("userLogin");
+//             if (userAccount==null) {
+//                 document.querySelector(".modal").style.display = "flex";
+//             }
+
+//         });
+       
+//     }
+// }
   // Lấy phần tử với class 'closeinfo' và 'productinfo'
   // Xác nhận phần tử tồn tại sau khi được tạo ra
     // Kiểm tra xem phần tử #close1 đã có trong DOM chưa
@@ -365,3 +389,112 @@ function displayinfo(productid) {
     } else {
         console.log('Nút Close không tìm thấy');
     }
+    function getuserid(){
+        const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+    const userAccountList = JSON.parse(localStorage.getItem("userAccountList")) || [];
+
+  const matchedUser = userAccountList.find(
+    (user) => user.username === username && user.password === password
+  );
+    if (matchedUser) {
+
+    }
+    }
+    const hieuungthemvaogio = document.getElementById('addtocart1');
+   
+    // Đảm bảo nút 'close' đã tồn tại trong DOM và sau đó thêm sự kiện
+    if (hieuungthemvaogio != null) {
+        hieuungthemvaogio.addEventListener('click', function() {
+    
+            // Khi click vào nút 'close', ẩn phần tử chứa thông tin sản phẩm
+            addtocart1.style.display = 'none';
+            addtocart1.style.transition = "all 0.3s ease";  // Thêm hiệu ứng mượt mà
+            addtocart1.style.width = "150%";  // Phóng to chiều rộng
+            addtocart1.style.height = "150%";  // Phóng to chiều cao
+        });
+    } 
+
+
+
+    function displayinfo(productid) {
+        // Lấy phần tử với id để display lên
+        const productinfo = document.getElementById('showinfoproduct');
+        productinfo.style.display = 'grid';
+        productinfo.innerHTML = '';
+    
+        const result = findObjectByProperty(productsinfo, "productId", productid);
+        productinfo.innerHTML = `
+            <div class="productinfo-img"> 
+                <img src="${arrProducts[productid-1].src}" alt="" class="info-img">
+            </div>
+            <div class="productinfo-info">
+                <div class="info1 name1">${arrProducts[productid-1].name}</div>
+                <div class="info1 author"><i class="fa-solid fa-tag taginfo"></i>Tác giả: ${result.author}</div>
+                <div class="info1 price1">${arrProducts[productid-1].price.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'})}</div>
+                <div class="info1 content1">${result.content}</div>
+                <div class="camket">
+                    <i class="fa-solid fa-file-shield"></i>Nhận sản phẩm như mô tả. Thông tin thẻ của bạn được bảo mật và không được chia sẻ với người bán.
+                </div>
+            </div>
+            <div class="addtocart1" id="addtocart1">thêm vào giỏ</div>
+            <div class="closeinfo" id="close1"><i class="fa-solid fa-xmark"></i></div>
+        `;
+        
+        // Đảm bảo nút 'close' đã tồn tại trong DOM và sau đó thêm sự kiện
+        const closeButton = document.getElementById('close1');
+        if (closeButton != null) {
+            closeButton.addEventListener('click', function() {
+                productinfo.style.display = 'none';
+            });
+        } else {
+            console.log('Nút Close không tìm thấy');
+        }
+    
+        const hieuungthemvaogio = document.getElementById('addtocart1');
+       
+        // Đảm bảo nút 'addtocart1' đã tồn tại trong DOM và sau đó thêm sự kiện
+        if (hieuungthemvaogio != null) {
+            hieuungthemvaogio.addEventListener('click', function() {
+                const userAccount = localStorage.getItem("userLogin");
+    
+                if (userAccount == null) {
+                    // Nếu người dùng chưa đăng nhập, hiển thị modal yêu cầu đăng nhập
+                    document.querySelector(".modal").style.display = "flex";
+                } else {
+                    // Nếu người dùng đã đăng nhập, thực hiện thêm sản phẩm vào giỏ hàng
+                    const user = JSON.parse(userAccount); // Lấy thông tin người dùng từ localStorage
+                    addToCart(user, productid); // Thêm sản phẩm vào giỏ
+                }
+            });
+        }
+    }
+    // Hàm để thêm sản phẩm vào giỏ hàng
+    function addToCart(user, productid) {
+        // Lấy danh sách giỏ hàng từ localStorage
+        const existingCarts = JSON.parse(localStorage.getItem("shoppingCarts")) || [];
+        
+        // Kiểm tra xem giỏ hàng của người dùng đã tồn tại chưa
+        let userCart = existingCarts.find(cart => cart.userId === user.userId);
+        
+        if (!userCart) {
+            // Nếu giỏ hàng của người dùng chưa tồn tại, tạo mới giỏ hàng với mảng sản phẩm trống
+            userCart = {
+                userId: user.userId,
+                items: []  // Mảng sản phẩm trống
+            };
+            existingCarts.push(userCart); // Thêm giỏ hàng mới vào danh sách giỏ hàng
+        }
+        
+        // Kiểm tra nếu sản phẩm đã có trong giỏ hàng, nếu chưa thêm vào
+        const productExists = userCart.items.find(item => item.productId === productid);
+        if (!productExists) {
+            // Thêm sản phẩm vào giỏ hàng
+            userCart.items.push({ productId: productid });
+            localStorage.setItem("shoppingCarts", JSON.stringify(existingCarts));
+            alert("Sản phẩm đã được thêm vào giỏ hàng!");
+        } else {
+            alert("Sản phẩm đã có trong giỏ hàng!");
+        }
+    }
+    

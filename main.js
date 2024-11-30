@@ -1,10 +1,31 @@
 
-"use strict";
 
-// Tải sản phẩm từ localStorage
+
+document.addEventListener("DOMContentLoaded", function () {
+  // Lấy danh sách sản phẩm từ localStorage
+  const productsFromLocal = JSON.parse(localStorage.getItem('product')) || [];
+  
+  // Hiển thị tất cả sản phẩm khi trang được tải
+  displayFilteredProducts(productsFromLocal, 1);
+  
+});
+const newbooks = JSON.parse(localStorage.getItem('newbook'));
+const arrnewproduct = document.getElementsByClassName('item-newproducts');
+
+for (let i = 0; i < arrnewproduct.length; i++) {
+    if (newbooks[i]) { // Kiểm tra xem newbooks[i] có tồn tại
+        arrnewproduct[i].innerHTML = `
+            <div class="images-newbook"><img src="${newbooks[i].src}" alt=""></div>
+            <div class="info-book name">${newbooks[i].name}</div>
+            <div class="info-book categorynew"><i class="fa-solid fa-tag"></i>${newbooks[i].category}</div>
+            <div class="info-book price"> <i class="fas fa-coins newcoin"></i>giá: ${newbooks[i].price}Đ</div>
+        `;
+    }
+}
+// ĐƯA LÊN 
 const productsFromLocal = JSON.parse(localStorage.getItem('product')) || [];
-const pageSize = 8;
 
+const pageSize = 8; 
 // Gợi ý hiển thị sản phẩm
 function showSearchSuggestions(searchTerm) {
   const searchResultsContainer = document.getElementById("show-product");
@@ -30,8 +51,8 @@ function showSearchSuggestions(searchTerm) {
       const suggestionItem = document.createElement('div');
       suggestionItem.classList.add('search-suggestion');
       suggestionItem.innerHTML = `
-          <img src="${product.src}" alt="${product.name}" class="suggestion-img">
-          <div class="suggestion-info">
+          <img src="${product.src}" alt="${product.name}" class="suggestion-img" onclick="displayinfo(${product.productId})">
+          <div class="suggestion-info" onclick="displayinfo(${product.productId})">
               <p class="suggestion-name">${product.name}</p>
               <p class="suggestion-price">${product.price}Đ</p>
           </div>
@@ -50,6 +71,7 @@ document.querySelector('.search-bar input').addEventListener('input', (event) =>
   const searchTerm = event.target.value.trim();
   showSearchSuggestions(searchTerm);
 });
+
 
 // Hiển thị sản phẩm và phân trang
 function displayFilteredProducts(filteredProducts, currentPage) {
@@ -75,8 +97,14 @@ function displayFilteredProducts(filteredProducts, currentPage) {
         productItem.classList.add('productitems');
         productItem.innerHTML = `
             <img class="product-img" src="${product.src}" alt="">
-            <div class="product-price"><i class="fa-solid fa-truck"></i>${product.price}Đ</div>
-            <div class="add-cart">Thêm vào giỏ</div>
+             <div class="product-name">${product.name}</div>
+            <div class="product-price">${product.price.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'})}</div>
+            <div class="iconfreeship">
+                <i class="fa-solid fa-truck"></i>
+                <div class="freeship">Freeship</div>
+            </div>
+            <div class="add-cart" onclick="displayinfo(${product.productId})">Thêm vào giỏ</div>
+
         `;
         productsContainer.appendChild(productItem);
     });
@@ -147,8 +175,6 @@ document.getElementById('reset-search').addEventListener('click', function(event
 }); // ĐƯA ĐẾN ĐÂY 
 
 
-
-
 document.addEventListener("DOMContentLoaded", function () {
   const swiper = new Swiper(".mySwiper", {
     loop: true,
@@ -167,7 +193,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }); 
 });
 //
-
 
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -192,7 +217,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     loginLink.style.display = "inline-block";
     logoutLink.style.display = "none";
-    accountinfo.style.display = "none"
+    accountinfo.style.display = "none";
+    location.reload();
   });
 });
 // ĐƯA LÊN ĐẾN CUỐI
@@ -235,7 +261,11 @@ document.querySelector("#login-link").addEventListener("click", () => {
   document.querySelector(".modal").style.display = "flex";
   showLogin();
 });
-
+document.querySelector(".close-btn").addEventListener("click", () => {
+  // Ẩn modal khi đóng
+  document.querySelector(".modal").style.display = "none";
+  showLogin();
+});
 //Thông tin tài khoản
 document.querySelector("#account-info-link").addEventListener("click", () => {
   // hien thi thong tin
@@ -249,16 +279,8 @@ document.querySelector(".modal1").addEventListener("click", (event) => {
 });
 //
 
-document.querySelector(".close-btn").addEventListener("click", () => {
-  // Ẩn modal khi đóng
-  document.querySelector(".modal").style.display = "none";
-  showLogin();
-});
-/*
-document.querySelector("#logout-link").addEventListener("click", () => {
-  // Ẩn modal khi đóng
-  document.querySelector(".modal").style.display = "none";
-});*/
+
+
 function showLogin() {
   document.getElementById("login-form").style.display = "block";
   document.getElementById("register-form").style.display = "none";
@@ -381,7 +403,7 @@ function login() {
   if (matchedUser) {
     alert("Đăng nhập thành công!");
     localStorage.setItem("userLogin", JSON.stringify(matchedUser));
-    localStorage.setItem("isLoggedIn", 1); // Đánh dấu trạng thái đăng nhập
+    // getuserid(username,password);
     window.location.href = "index.html";
   } else {
     alert("Tên đăng nhập hoặc mật khẩu không đúng!");
@@ -483,9 +505,6 @@ document.addEventListener("DOMContentLoaded", function() {
       displayUserInfo(userLogin); // Hiển thị thông tin người dùng
   }
 });
-document.querySelector(".close-btn").onclick = function () {
-  document.querySelector(".login-container").style.display = "none";
-};
 
 
 // Hàm để khởi tạo các tỉnh vào dropdown
@@ -555,25 +574,22 @@ window.onload = function() {
   document.getElementById('provinces').addEventListener('change', populateDistricts);
   document.getElementById('districts').addEventListener('change', populateWards);
 };
-
 // tìm kiếm drop
 // Lấy các phần tử
-const searchBar = document.querySelector('.search-bar');
+const searchBar = document.querySelector('#searchh');
 const searchDropdown = document.querySelector('#search-results');
 
 // Hiển thị dropdown khi nhấn vào search bar
-searchBar.addEventListener('click', function(event) {
-    searchDropdown.classList.toggle('show'); // Chuyển đổi lớp 'show'
-    event.stopPropagation(); // Ngăn chặn sự kiện nhấp chuột nổi bọt
+searchBar.addEventListener('click', function (event) {
+  // Kiểm tra nếu dropdown không có lớp 'show' thì thêm nó vào
+  searchDropdown.classList.toggle('show'); 
+  event.stopPropagation(); // Ngăn sự kiện lan ra ngoài
 });
 
-// Ẩn dropdown khi nhấn ra ngoài
-document.addEventListener('click', function(event) {
-    if (!searchBar.contains(event.target) && !searchDropdown.contains(event.target)) {
-        searchDropdown.classList.remove('show'); // Xóa lớp 'show'
-    }
+// Ẩn dropdown khi nhấn bên ngoài
+document.addEventListener('click', function (event) {
+  // Nếu click bên ngoài search-bar và searchDropdown thì ẩn dropdown
+  if (!searchBar.contains(event.target) && !searchDropdown.contains(event.target)) {
+    searchDropdown.classList.remove('show'); // Loại bỏ lớp 'show'
+  }
 });
-
-// Lưu thông tin người dùng
-
-// Thay đổi thông tin
