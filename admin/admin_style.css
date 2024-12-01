@@ -716,3 +716,291 @@ body{
     z-index: 2;
 }
 
+
+#nganThoat2{
+    display: none;
+    position: absolute;
+    left: 50%;
+    right: 50%;
+    translate: -50% -50%;
+    width: 100%;
+    height: 100%;
+    z-index: 4;
+}
+
+#title_doanhthu{
+    width: 100%;
+    text-align: center;
+    font-size: 30px;
+    color: #1565D6;
+    margin-bottom: 15px;
+}
+
+
+#control_doanh_thu_1 #chon_ThoiGian{
+    padding: 5px;
+    border-radius: 5px;
+    border: solid #1565D6;
+    outline: none;
+    margin-bottom: 10px;
+}
+
+#day_control{
+    display: none;
+    position: relative;
+}
+
+#day_control label{
+    color: rgb(255, 0, 0);
+    font-weight: bold;
+    margin-left: 20px;
+    margin-right: 8px;
+}
+
+#day_control input{
+    padding: 5px;
+    width: 150px;
+    border: solid #1565D6;
+    border-radius: 5px;
+}
+
+#day_control input:focus{
+    outline: none;
+    border: solid red;
+}
+
+#day_control button{
+    position: absolute;
+    padding: 5px;
+    right: 40%;
+    top: 0;
+    background-color: #1565D6;
+    color: white;
+    border-radius: 5px;
+    width: 80px;
+    text-align: center;
+    cursor: pointer;
+    border: none;
+}
+
+#day_control button:hover{
+    background-color: red;
+}
+
+#All_infor_doanh_thu{
+    margin: 20px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+#All_infor_doanh_thu p{
+    font-weight: bold;
+    font-size: 18px;
+}
+
+#control_doanh_thu_2{
+    margin-bottom: 15px;
+}
+
+#control_doanh_thu_2 #chon_Loai_TK{
+    padding: 5px;
+    border-radius: 5px;
+    border: solid #1565D6;
+    outline: none;
+}
+
+#kq_thong_ke{
+    width: 100%;
+}
+
+#kq_thong_ke #title_thongke{
+    width: 100%;
+    text-align: center;
+    font-size: 20px;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: red;
+}
+
+#kq_thong_ke_theo_khach_hang{
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#kq_thong_ke_theo_khach_hang th{
+    background-color: #FFBF00;
+    height: 30px;
+}
+
+#kq_thong_ke_theo_khach_hang td{
+    height: 40px;
+}
+
+.bnt_ShowOrder_all{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.bnt_ShowOrder{
+    padding: 3px;
+    background-color: #1565D6;
+    width: 40%;
+    color: white;
+    height: 25px;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.bnt_ShowOrder:hover{
+    background-color: red;
+}
+
+#bang_hd_thong_ke{
+    display: none;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    translate:  -50% -50%;
+    width: 1000px;
+    height: 550px;
+    z-index: 3;
+    background-color: white;
+    border: solid #1565D6;
+    padding: 10px;
+    border-radius: 10px;
+    overflow-y: scroll;
+}
+
+#bang_hd_thong_ke table{
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#bang_hd_thong_ke table th{
+    background-color: #FFBF00;
+    height: 35px;
+}
+
+#bang_hd_thong_ke table td{
+    height: 35px;
+}
+
+#thoat_bang_hd_thong_ke{
+    position: absolute;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    color: #1565D6;
+    font-weight: bold;
+    background-color: white;
+    border: none;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+#thoat_bang_hd_thong_ke:hover{
+    color: red;
+}
+
+#bang_hd_thong_ke .infor1{
+    color: #1565D6;
+    font-size: 20px;
+    margin: 10px;
+}
+
+.bnt_xem_hdtk{
+    background-color: #1565D6;
+    color: white;
+    width: 50px;
+    height: 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.bnt_xem_hdtk:hover{
+    background-color: red;
+}
+
+#chitiet_hd_thongke{
+    display: none;
+    position: absolute;
+    left: 50%;
+    top: 60%;
+    translate:  -50% -60%;
+    width: 600px;
+    height: 550px;
+    z-index: 5;
+    background-color: white;
+    border: solid red;
+    padding: 10px;
+    overflow-y: scroll;
+}
+
+#chitiet_hd_thongke #head_title{
+    color: #1565D6;
+    text-align: center;
+    font-size: 22px;
+    margin-bottom: 10px;
+    margin-left: 0px;
+}
+
+#chitiet_hd_thongke p{
+    margin-left: 15px;
+    margin-bottom: 5px;
+}
+
+#chitiet_hd_thongke .title_infor{
+    color: #1565D6;
+    font-weight: bold;
+    margin-left: 0px;
+}
+
+.ds_sp_items1{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 10px;
+    border-bottom: solid 0.5px blue;
+    padding: 5px;
+    color: red;
+    font-size: 18px;
+}
+
+.ds_sp_items1_img{
+    height: 100px;
+    width: 75px;
+}
+
+#thoat_chitiet_hd_thongke{
+    position: fixed;
+    right: 10px;
+    top: 10px;
+    width: 30px;
+    height: 30px;
+    font-size: 30px;
+    color: #1565D6;
+    cursor: pointer;
+}
+
+#thoat_chitiet_hd_thongke:hover{
+    color: red;
+}
+
+#kq_thong_ke_theo_san_pham{
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#kq_thong_ke_theo_san_pham th{
+    background-color: #FFBF00;
+    height: 30px;
+}
+
+#kq_thong_ke_theo_san_pham td{
+    height: 40px;
+}
