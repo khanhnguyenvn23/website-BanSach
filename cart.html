@@ -20,10 +20,9 @@
         </div>
 
         <div class="user-menu">
-            <a href="auth.html" id="login-link"><i class="fas fa-user"></i> Tài khoản</a>
-            <a href="#" id="logout-link" style="display: none;"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+            <a href="/" id="login-link"><i class="fas fa-user"></i> Tài khoản</a>
             <div class="">
-                <a href="#">
+                <a href="cart.html">
                     <i class="fas fa-shopping-cart"></i> Giỏ hàng
                 </a>
             </div>
@@ -36,7 +35,7 @@
                 <i class="fa-solid fa-cart-plus"></i>
                 <a id="load-again-cart" href="#">Sản phẩm trong giỏ</a>
             </div>
-            <div class="text-size  orderHistory" onclick="displayOrderHistory()">
+            <div class="text-size  orderHistory" onclick="displayOrderHistory(); noneOrderHistory()">
                 <i class="fa-solid fa-clock"></i>
                 <a href="#">Lịch sử mua hàng</a>
             </div>
@@ -45,7 +44,7 @@
 
             <div class="text-size back-mainPage">
                 <i class="fa-solid fa-reply"></i>
-                <a id="backIndexHtml" href="#">Tiếp tục mua sắm</a>
+                <a id="backIndexHtml" href="/">Tiếp tục mua sắm</a>
             </div>
         </div>
 
@@ -178,7 +177,7 @@
                         <div>Chi tiết</div>
                     </div>
 
-                    <div class="none-orderHistory-list hidden">
+                    <div class="none-orderHistory-list ">
                         <p>Chưa mua sản phẩm nào</p>
                     </div>
                     <div class="orderHistory-list"></div>
@@ -186,7 +185,7 @@
             </div>
 
 
-            <div class="modal hidden">
+            <div class="modal">
                 <div class="alert-cart hidden">
                     <div class="message">Bạn chưa chọn sản phẩm nào để mua.</div>
                     <button class="close-alert-btn" onclick="closeAlertNotSelect()">OK</button>
@@ -237,6 +236,18 @@
 
                 <div class="modal-order-detail hidden">
 
+                </div>
+
+                <div class="modal-none-login">
+                    <h2>Thông báo</h2>
+                    <p>Bạn chưa đăng nhập. Vui lòng đăng nhập để tiếp tục.</p>
+                    <a href="/" class="home-button">Quay về trang chủ</a>
+                </div>
+
+                <div class="modal-none-address hidden">
+                    <h2>Thông báo</h2>
+                    <p>Bạn chưa cập nhật địa chỉ. Vui lòng cập nhật để tiếp tục!</p>
+                    <a href="/" class="home-button">Quay về trang chủ</a>
                 </div>
             </div>
         </div>
