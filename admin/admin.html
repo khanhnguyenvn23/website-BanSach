@@ -21,7 +21,7 @@
                             <i class="fa-solid fa-user-gear"></i>
                             <span>Thông tin Admin</span>
                         </li>
-                        <li class="nav_left-menu">
+                        <li class="nav_left-menu" onclick="Show_doanh_thu()">
                             <i class="fa-solid fa-chart-line"></i>
                             <span>Doanh thu</span>
                         </li>
@@ -50,9 +50,10 @@
                     <input type="text" name="" id="Admin_Password">
                     <input type="button" name="btnLA" id="login_Admin_bnt" value="Đăng nhập" onclick="Login_Admin()">
                 </form>
-            </div>   
+            </div>
              <!----------------------------------form thêm khách hàng---------------------------------->
                 <div id="nganThoat"></div>
+                <div id="nganThoat2"></div>
                 <div id="form_add_infor">
                     <div id="thoat_form" onclick="HideForm_Add_User()"><i class="fa-solid fa-xmark"></i></div>
                     <form action="add_user" id="add_user">
@@ -126,61 +127,12 @@
                         </form>
                     </div>
                 </div>
+                <!-- ------------------------- Bảng các hoá đơn trong thống kê ----------------------------- -->
+                <div id="bang_hd_thong_ke"></div>
+                <!-- ------------------------- Bảng chi tiết hoá đơn trong thống kê ----------------------------- -->
+                <div id="chitiet_hd_thongke"></div>
 
-
-
-                <div id="admin_content">
-<!--                     
-                     <div id="doanh_thu">
-                        <div id="thongke_doanh_thu">
-                            <div id="title_doanhthu">Thống kê doanh thu cửa hàng</div>
-                        <div id="control_doanh_thu_1">
-                            <select name="" id="chon_ThoiGian">
-                                <option value="0">Từ trước tới nay</option>
-                                <option value="1">Trong khoảng thời gian</option>
-                            </select>
-                            <div id="day_control">
-                                <label for="from_day">Từ ngày:</label>
-                                <input type="date" name="" id="from_day">
-                                <label for="to_day">Đến ngày:</label>
-                                <input type="date" name="" id="to_day">
-                            </div>
-                        </div>
-                        <div id="All_infor_doanh_thu">
-                            <p id="infor_1">Tổng doanh thu: 500000VNĐ</p>
-                            <p id="infor_2">Tổng số lượng sản phẩm bán ra: 100 sản phẩm</p>
-                        </div>
-                        <div id="control_doanh_thu_2">
-                            <select name="" id="chon_ThoiGian">
-                                <option value="0">Thống kê theo mặt hàng</option>
-                                <option value="1">Thống kê theo khách hàng</option>
-                            </select>
-                        </div>
-                        <div id="thong_ke_theo_mat_hang"></div>
-                        <p id="title_thongke">Các khách hàng đã mua hàng</p>
-                        
-                        </div>
-                    </div>  -->
-                    
-                    <!-- <div id="Thong_tin_Admin">
-                        <p class="title_admin">Thông tin Admin:</p>
-                        <p class="text_admin">Họ và Tên: Nguyễn Công Lâm</p>
-                        <p class="text_admin">Số điện thoại: 0376516504</p>
-                        <p class="text_admin">Email: nguyenconglam2k5@gmail.com</p>
-
-                        <p class="title_admin infor_shop">Thông tin SHOP:</p>
-                        <p class="text_admin">Địa chỉ : số 06, An Dương Vương, Phường 3, Quận 5 TP.Hồ Chí Minh</p>
-                        <p class="text_admin">Hotline: 0376516504</p>
-                        <p class="text_admin">Loại hình kinh doanh: Bán sách trực tuyến</p>
-
-                    </div>
-
-                    <div id="Thong_tin_Admin_control">
-                        <div id="back_home_bnt"><i class="fa-solid fa-arrow-left"></i> Trở lại trang bán hàng</div>
-                        <div id="logout_bnt"><i class="fa-solid fa-arrow-right-from-bracket"></i>Đăng xuất</div>
-                        <div id="lock_login"><i class="fa-solid fa-floppy-disk"></i>Lưu đăng nhập</div>
-                    </div> -->
-                </div>
+                <div id="admin_content"></div>
             </div>
         </div>
         <script src="admin_main.js"></script>
