@@ -200,25 +200,34 @@ document.addEventListener("DOMContentLoaded", function () {
   const userAccount = localStorage.getItem("userLogin")
   const loginLink = document.getElementById("login-link");
   const logoutLink = document.getElementById("logout-link");
-  const accountinfo = document.getElementById("account-info-link")
+  const accountinfo = document.getElementById("account-info-link");
+  const userdisplay = document.getElementById("username-display")
 
   if (userAccount) {
     loginLink.style.display = "inline-block";
     logoutLink.style.display = "inline-block";
     accountinfo.style.display = "inline-block"
+    document.querySelector("#login-link").addEventListener("click", () => {
+      // Hiển thị modal
+      document.querySelector(".modal").style.display = "none";
+      showLogin();
+    });
   } else {
     loginLink.style.display = "inline-block";
     logoutLink.style.display = "none";
-    accountinfo.style.display = "none"
+    accountinfo.style.display = "none";
   }
-
   logoutLink.addEventListener("click", function () {
     localStorage.removeItem("userLogin");
-
+    document.querySelector("#login-link").addEventListener("click", () => {
+      // Hiển thị modal
+      document.querySelector(".modal").style.display = "flex";
+      showLogin();
+    });
     loginLink.style.display = "inline-block";
     logoutLink.style.display = "none";
     accountinfo.style.display = "none";
-    location.reload();
+    userdisplay.style.display = "none";
   });
 });
 // ĐƯA LÊN ĐẾN CUỐI
@@ -296,31 +305,38 @@ function showRegister() {
 }
 
 function register() {
-  const username = document.getElementById("register-username").value;
-  const fullname = document.getElementById("register-fullname").value;
-  const password = document.getElementById("register-password").value;
+  const UserName = document.getElementById("register-username").value;
+  const FullName = document.getElementById("register-fullname").value;
+  const UserPassword = document.getElementById("register-password").value;
   const confirmPassword = document.getElementById("confirm-password").value;
-  const phoneNumber = document.getElementById("phone-number").value;
+  const Sdt = document.getElementById("phone-number").value;
   let presentId = parseInt(localStorage.getItem("presentId"));
- /* const address1 = document.getElementById("infoaddress").value ='';
+  /*const address1 = document.getElementById("infoaddress").value ='';
   const address2 = document.getElementById("provinces").value=0;
   const address3 = document.getElementById("districts").value=0;
   const address4 = document.getElementById("wards").value=0;*/
-if (fullname.length == 0) {
-  document.querySelector('.form-message-fullname').innerHTML = 'Vui lòng nhập họ vâ tên';
+if (FullName.length == 0) {
+  document.querySelector('.form-message-fullname').innerHTML = 'Vui lòng nhập họ và tên';
   document.getElementById('register-fullname').focus();
   return;
-} else if (fullname.length < 3) {
+} else if (FullName.length < 3) {
   document.getElementById('register-fullname').value = '';
   document.querySelector('.form-message-fullname').innerHTML = 'Vui lòng nhập họ và tên lớn hơn 3 kí tự';
   return;
 } else {
   document.querySelector('.form-message-fullname').innerHTML = '';
 }
-if (password.length == 0) {
+if (UserName == 0) {
+  document.querySelector('.form-message-username').innerHTML = 'Vui lòng nhập tên đăng nhập';
+  document.getElementById('register-username').focus();
+  return;
+} else {
+  document.querySelector('.form-message-username').innerHTML = '';
+}
+if (UserPassword.length == 0) {
   document.querySelector('.form-message-password').innerHTML = 'Vui lòng nhập mật khẩu';
   return;
-} else if (password.length < 6) {
+} else if (UserPassword.length < 6) {
   document.querySelector('.form-message-password').innerHTML = 'Vui lòng nhập mật khẩu lớn hơn 6 kí tự';
   document.getElementById('register-password').value = '';
   return;
@@ -330,17 +346,17 @@ if (password.length == 0) {
 if (confirmPassword == 0) {
   document.querySelector('.form-message-password-confi').innerHTML = 'Vui lòng nhập lại mật khẩu';
   return;
-} else if (confirmPassword !== password) {
+} else if (confirmPassword !== UserPassword) {
   document.querySelector('.form-message-password-confi').innerHTML = 'Mật khẩu không khớp';
   document.getElementById('confirm-password').value = '';
   return;
 } else {
   document.querySelector('.form-message-password-confi').innerHTML = '';
 }
-if (phoneNumber.length == 0) {
+if (Sdt.length == 0) {
   document.querySelector('.form-message-phone').innerHTML = 'Vui lòng nhập vào số điện thoại';
   return;
-} else if (!/^\d{10}$/.test(phoneNumber)) {
+} else if (!/^\d{10}$/.test(Sdt)) {
   document.querySelector('.form-message-phone').innerHTML = 'Vui lòng nhập vào số điện thoại 10 số';
   document.getElementById('phone-number').value = '';
   return;
@@ -352,77 +368,103 @@ if (phoneNumber.length == 0) {
     presentId = 10001;
   }
 
-  if (!username || !password || !confirmPassword || !phoneNumber || !fullname /*|| !address2 || !address3 || !address4*/) {
+  if (!UserName || !UserPassword || !confirmPassword || !Sdt || !FullName /*|| !address2 || !address3 || !address4*/) {
     alert("Vui lòng điền đầy đủ thông tin!");
     return;
   }
 
-  if (password !== confirmPassword) {
+  if (UserPassword !== confirmPassword) {
     alert("Mật khẩu nhập lại không khớp!");
     return;
   }
-  const userAccountList = JSON.parse(localStorage.getItem("userAccountList")) || [];
+  const userAccountList = JSON.parse(localStorage.getItem("USER")) || [];
 
-  const isUsernameTaken = userAccountList.some((user) => user.username === username);
-  if (isUsernameTaken) {
-    alert("Tên đăng nhập đã tồn tại!");
+  const isUserNameTaken = userAccountList.some((user) => user.UserName === UserName); // NOTE
+  const isSdt = userAccountList.some((user) => user.Sdt == Sdt); //NOTE
+  if (isUserNameTaken) {
+    document.querySelector('.form-message-username').innerHTML = 'Tên đăng nhập đã tồn tại';
+    return;
+  }
+  if (isSdt){
+    document.querySelector('.form-message-phone').innerHTML = 'Số điện thoại đã tồn tại';
     return;
   }
 
   const newUser = {
-    userId: presentId,
-    username,
-    fullname,
-    password,
-    phoneNumber,
-    address1:'',
-    address2:0,
-    address4:0,
-    address3:0,
+    UserID: presentId,
+    UserName,
+    FullName,
+    UserPassword,
+    Sdt,
+    Address1:'',
+    Address2:0,
+    Address4:0,
+    Address3:0,
+    Status: 1
   };
 
   userAccountList.push(newUser);
 
-  localStorage.setItem("userAccountList", JSON.stringify(userAccountList));
+  localStorage.setItem("USER", JSON.stringify(userAccountList));
   localStorage.setItem("presentId", presentId + 1);
    // Sau khi đăng ký thành công, hiển thị thông tin người dùng
   alert("Đăng kí thành công!");
   showLogin();
+  
 }
 
 function login() {
-  const username = document.getElementById("username").value;
-  const password = document.getElementById("password").value;
-
-  const userAccountList = JSON.parse(localStorage.getItem("userAccountList")) || [];
+  const UserName = document.getElementById("username").value;
+  const UserPassword = document.getElementById("password").value;
+  const userAccountList = JSON.parse(localStorage.getItem("USER")) || [];
 
   const matchedUser = userAccountList.find(
-    (user) => user.username === username && user.password === password
+    (user) => user.UserName === UserName && user.UserPassword === UserPassword
   );
 
   if (matchedUser) {
+    if (matchedUser .Status === 0) {
+      alert("Tài khoản của bạn đã bị khóa!");
+      return;
+  }
     alert("Đăng nhập thành công!");
     localStorage.setItem("userLogin", JSON.stringify(matchedUser));
-    // getuserid(username,password);
+    // Hiển thị tên người dùng
+    document.getElementById("username-display").innerText = ` ${matchedUser .UserName}`;
     window.location.href = "index.html";
   } else {
     alert("Tên đăng nhập hoặc mật khẩu không đúng!");
   }
 }
-
+function lockAccount(UserName) {
+  const userAccountList = JSON.parse(localStorage.getItem("USER")) || [];
+  
+  const userIndex = userAccountList.findIndex(user => user.UserName === UserName); // NOTE
+  if (userIndex !== -1) {
+      userAccountList[userIndex].Status = 0; // Đặt trạng thái tài khoản thành 0
+      localStorage.setItem("user", JSON.stringify(userAccountList));
+      alert("Tài khoản đã bị khóa thành công!");
+  } else {
+      alert("Không tìm thấy tài khoản.");
+  }
+}
 // Hàm hiển thị thông tin người dùng trong tài khoản
 function displayUserInfo(user) {
+  if (user.Status === 0) {
+    alert("Tài khoản của bạn đã bị khóa!");
+    return; // Dừng hiển thị thông tin nếu tài khoản bị khóa
+}
   // Lấy các trường thông tin từ người dùng đã đăng nhập
-  document.getElementById("infoname").value = user.fullname;
-  document.getElementById("infophone").value = user.phoneNumber;
+  document.getElementById("infoname").value = user.FullName;
+  document.getElementById("infophone").value = user.Sdt;
   document.getElementById("infoemail").value = user.email;
-  document.getElementById("infoaddress").value = user.address1;
+  document.getElementById("infoaddress").value = user.Address1;
   // Điền vào các dropdown tỉnh, quận, phường
-  document.getElementById("provinces").value = user.address2;
+  document.getElementById("provinces").value = user.Address2;
   populateDistricts(); // Gọi hàm để điền quận huyện dựa trên tỉnh
-  document.getElementById("districts").value = user.address3;
+  document.getElementById("districts").value = user.Address3;
   populateWards(); // Gọi hàm để điền phường xã dựa trên quận
-  document.getElementById("wards").value = user.address4;
+  document.getElementById("wards").value = user.Address4;
   // Đặt sự kiện lưu thay đổi thông tin người dùng
   document.getElementById("save-info-user").addEventListener("click", function() {
       changeInformation(user);
@@ -436,7 +478,7 @@ function displayUserInfo(user) {
 
 // Hàm thay đổi thông tin người dùng
 function changeInformation(user) {
-  const updatedFullname = document.getElementById("infoname").value;
+  const updatedFullName = document.getElementById("infoname").value;
   const updatedPhone = document.getElementById("infophone").value;
   const updatedEmail = document.getElementById("infoemail").value;
   const updatedAddress = document.getElementById("infoaddress").value;
@@ -445,19 +487,19 @@ function changeInformation(user) {
   const updatedAddress4 = document.getElementById("wards").value;
 
   // Cập nhật thông tin vào đối tượng người dùng
-  user.fullname = updatedFullname;
-  user.phoneNumber = updatedPhone;
+  user.FullName = updatedFullName;
+  user.Sdt = updatedPhone;
   user.email = updatedEmail;
-  user.address1 = updatedAddress.trim();
-  user.address2 = updatedAddress2.trim();
-  user.address3 = updatedAddress3.trim();
-  user.address4 = updatedAddress4.trim();
+  user.Address1 = updatedAddress.trim();
+  user.Address2 = updatedAddress2.trim();
+  user.Address3 = updatedAddress3.trim();
+  user.Address4 = updatedAddress4.trim();
 
   // Lưu lại thông tin người dùng vào localStorage
-  const userAccountList = JSON.parse(localStorage.getItem("userAccountList"));
-  const index = userAccountList.findIndex((u) => u.username === user.username);
-  userAccountList[index] = user; // Cập nhật người dùng trong danh sách
-  localStorage.setItem("userAccountList", JSON.stringify(userAccountList));
+  const userAccountList = JSON.parse(localStorage.getItem("USER"));
+  const index = userAccountList.findIndex((u) => u.UserName === user.UserName);
+  userAccountList[index] = user; // Cập nhật người dùng trong danh sách NOTE
+  localStorage.setItem("USER", JSON.stringify(userAccountList));
   localStorage.setItem("userLogin", JSON.stringify(user));
 
   alert("Cập nhật thông tin thành công!");
@@ -470,7 +512,7 @@ function changePassword(user) {
   const confirmPassword = document.getElementById("password-comfirm-info").value;
 
   // Kiểm tra mật khẩu cũ và mật khẩu mới
-  if (currentPassword !== user.password) {
+  if (currentPassword !== user.UserPassword) {
       alert("Mật khẩu hiện tại không đúng!");
       return;
   }
@@ -486,13 +528,13 @@ function changePassword(user) {
   }
 
   // Cập nhật mật khẩu
-  user.password = newPassword;
+  user.UserPassword = newPassword;
 
   // Lưu lại thông tin vào localStorage
-  const userAccountList = JSON.parse(localStorage.getItem("userAccountList"));
-  const index = userAccountList.findIndex((u) => u.username === user.username);
+  const userAccountList = JSON.parse(localStorage.getItem("USER"));
+  const index = userAccountList.findIndex((u) => u.UserName === user.UserName);
   userAccountList[index] = user;
-  localStorage.setItem("userAccountList", JSON.stringify(userAccountList));
+  localStorage.setItem("USER", JSON.stringify(userAccountList));
   localStorage.setItem("userLogin", JSON.stringify(user));
 
   alert("Đổi mật khẩu thành công!");
@@ -503,7 +545,9 @@ document.addEventListener("DOMContentLoaded", function() {
   const userLogin = JSON.parse(localStorage.getItem("userLogin"));
   if (userLogin) {
       displayUserInfo(userLogin); // Hiển thị thông tin người dùng
+      document.getElementById("username-display").innerText = ` ${userLogin.UserName}`;
   }
+  
 });
 
 
@@ -565,7 +609,14 @@ function populateWards() {
       wardsSelect.appendChild(option);
   });
 }
-
+window.onload = function() {
+  populateProvinces(); // Điền tỉnh vào dropdown khi tải trang
+  const user = JSON.parse(localStorage.getItem('userLogin'));
+  if (user) {
+    displayUserInfo(user); // Hiển thị thông tin người dùng đã đăng nhập
+  }
+};
+/*
 // Hàm khởi tạo dropdown và các sự kiện
 window.onload = function() {
   populateProvinces();
@@ -573,7 +624,7 @@ window.onload = function() {
   // Gắn sự kiện onchange cho các dropdown
   document.getElementById('provinces').addEventListener('change', populateDistricts);
   document.getElementById('districts').addEventListener('change', populateWards);
-};
+};*/
 // tìm kiếm drop
 // Lấy các phần tử
 const searchBar = document.querySelector('#searchh');

@@ -4,6 +4,11 @@
     box-sizing: border-box;
 }
 
+html {
+    font-family: "Inter", sans-serif;
+
+}
+
 .logo-size {
     font-size: 32px;
 }
@@ -15,72 +20,54 @@
 }
 
 body {
-    box-sizing: border-box;
+    padding: 5rem 2rem 0;
 }
 
 /* Start Header */
-.QKhanh_header {
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
     display: flex;
-    background-color: #003CBF;
-    height: 80px;
-    border: none;
-}
-
-.QKhanh_logo {
-    color: white;
-    right: 0;
-    height: 100%;
-    line-height: 80px;
-    padding: 0 30px;
-    width: 70%;
-    margin-right: 179px;
-}
-
-.QKhanh_nav {
-    display: flex;
-    justify-content: right;
-    width: 30%;
-    gap: 10px;
-}
-
-.QKhanh_logo a {
-    font-size: 24px;
-    color: #FFBF00;
-}
-
-.QKhanh_user {
-    color: white;
-    right: 0;
-    height: 100%;
-    padding: 0 20px;
-    display: flex;
-    justify-content: center;
     align-items: center;
-    gap: 10px;
-
-}
-
-.QKhanh_user:hover {
-    background-color: #ccc;
-    color: black;
-    cursor: pointer;
-}
-
-.QKhanh_cart {
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: #0071ce;
     color: white;
-    right: 0;
-    height: 100%;
-    padding: 0 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    background-color: #ccc;
-    color: black;
+    z-index: 10000;
 }
 
-.QKhanh_cart:hover {
-    cursor: pointer;
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    height: 30px;
+    width: auto;
+    margin-right: 10px;
+}
+
+.user-menu {
+    display: flex;
+    align-items: center;
+    position: relative;
+    gap: 10px;
+}
+
+.user-menu a {
+    color: white;
+    margin-left: 15px;
+    text-decoration: none;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+}
+
+.user-menu a i {
+    margin-right: 5px;
 }
 
 /* End Header */
@@ -587,10 +574,11 @@ body {
 }
 
 
-.btn-detail .distance{
+.btn-detail .distance {
     margin: 0px 5px;
     padding: 0;
 }
+
 /* End History-Cart */
 /* End Right-Content */
 

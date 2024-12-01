@@ -170,7 +170,7 @@ p.suggestion-price {
   text-decoration: none;
   font-size: 16px;
   display: flex;
-  align-items: center;
+  align-items: baseline;
 }
 
 .user-menu a i {
@@ -179,6 +179,17 @@ p.suggestion-price {
 .account-dropdown {
   position: relative;
   display: inline-block;
+}
+
+#username-display {
+  position: absolute;
+  font-size: 13px;
+  right: 0;
+  font-weight: 900;
+  cursor: pointer;
+}
+.fas.fa-user, .fas.fa-shopping-cart {
+  font-size: 35px;
 }
 .dropdown-content {
   display: none;

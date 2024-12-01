@@ -26,6 +26,7 @@ function openSelectAddress() {
 getLocalStorageUserLogin()
 function getLocalStorageUserLogin() {
     userLogin = JSON.parse(localStorage.getItem('userLogin'));
+    if (userLogin === null) return;
     document.querySelector('#idName').value = userLogin.fullname;
     document.querySelector('#idPhoneNumber').value = userLogin.phoneNumber;
 
@@ -403,24 +404,56 @@ function themBotSanPham(btn) {
     item.quantity = itemQuantity.value;
     tongTien1SP(btn.parentElement.parentElement, item);
 }
+let orderItems = [];
+function getOrderItems() {
+    const userLogin = JSON.parse(localStorage.getItem("userLogin"));
+    
+    if (userLogin == null) {
+        alert("Có lỗi, bạn chưa đăng nhập.");
+    }
+     else {
+        // Kiểm tra nếu người dùng đã đăng nhập
+        const existingCarts = JSON.parse(localStorage.getItem("shoppingCarts")) || [];
 
-// Tạo tạm 1 cái giỏ có sẵn sách
-var orderItems = [
-    { productId: 40, img: 'assets/images/sanpham40.webp', cateory: 'tinhcam', name: 'Vẽ em bằng màu nội nhớ', price: 220000 },
-    { productId: 41, img: 'assets/images/sanpham41.webp', cateory: 'tinhcam', name: 'kiếp nào ta cũng tìm thấy nhau', price: 250000 },
-    { productId: 42, img: 'assets/images/sanpham42.webp', cateory: 'lich su', name: 'các triều đại Việt Nam', price: 290000 },
-    { productId: 43, img: 'assets/images/sanpham43.webp', cateory: 'tinhcam', name: 'Ngày xưa có một chuyện tình', price: 270000 }
-]
-// Lấy sản phẩm được thêm vào giỏ
-// var orderItems = JSON.parse(localStorage.getItem('productIncart'));
+        // Tìm giỏ hàng của người dùng trong localStorage
+        const userCart = existingCarts.find(cart => cart.UserId === userLogin.UserId);
 
-// Hàm này thêm thuộc tính Số Lượng và Giá 1 SP cho từng SP trong giỏ
-function addQuantity() {
-    for (let i = 0; i < orderItems.length; i++) {
-        orderItems[i].quantity = 1;
-        orderItems[i].totalPrice1Item = orderItems[i].price;
+        if (userCart && userCart.items.length > 0) {
+            // Nếu giỏ hàng tồn tại và có sản phẩm, gán sản phẩm vào orderItems
+            const productArray = JSON.parse(localStorage.getItem("product")) || [];
+
+            orderItems = userCart.items.map(item => {
+                // Tìm sản phẩm trong mảng productArray theo productId
+                const product = productArray.find(p => p.productId === item.productId);
+
+                if (product) {
+                    return {
+                        productId: product.productId,
+                        name: product.name, // Tên sản phẩm
+                        price: product.price, // Giá sản phẩm
+                        img: product.src, // Hình ảnh sản phẩm
+                        quantity: item.quantity || 1, // Số lượng (mặc định là 1 nếu không có)
+                        totalPrice1Item: product.price * (item.quantity || 1), // Tổng giá cho 1 sản phẩm
+                    };
+                }
+                return null; // Trả về null nếu không tìm thấy sản phẩm
+            }).filter(item =>  item!== null); // Lọc bỏ các giá trị null nếu sản phẩm không tồn tại
+        } else {
+            console.log("Giỏ hàng của người dùng trống.");
+        }
     }
 }
+getOrderItems();
+
+// Hàm thêm số lượng cho các sản phẩm trong giỏ hàng
+function addQuantity() {
+    for (let i = 0; i < orderItems.length; i++) {
+        orderItems[i].quantity = 1; // Đặt lại số lượng cho mỗi sản phẩm là 1
+        orderItems[i].totalPrice1Item = orderItems[i].price; // Cập nhật giá trị tổng cho sản phẩm
+    }
+}
+
+// Gọi hàm để thêm sản phẩm vào giỏ hàng (nếu cần)
 addQuantity();
 
 // Hiển thị các sản phẩm được thêm trong giỏ
@@ -474,7 +507,7 @@ function chon1SanPham(selection) {
 
     if (selection.checked) orderItemIsPayed.push(book);                               //Thêm vào
     else {
-        let index = orderItemIsPayed.findIndex(product => product.name === bookName); //Bỏ ra
+        let index = orderItemIsPayed.findIndex(item => item.productId === book.productId); //Bỏ ra
         orderItemIsPayed.splice(index, 1);
     }
 }
@@ -546,8 +579,20 @@ function xoaKhoiGioHang() {
 // Xóa sản phẩm được chọn
 function deleteItem() {
     orderItemIsPayed.forEach(itemPayed => {
-        let index = orderItems.findIndex(item => item.name === itemPayed.name);
-        orderItems.splice(index, 1);
+        // Xóa trong giỏ đã lấy từ localStorage
+        let indexOrderItem = orderItems.findIndex(item => item.productId === itemPayed.productId);
+        orderItems.splice(indexOrderItem, 1);
+
+
+        // Xóa trong giỏ localStorage
+        const userLogin = JSON.parse(localStorage.getItem("userLogin"));
+        const shoppingCarts = JSON.parse(localStorage.getItem("shoppingCarts")) || [];
+
+        const currentCart = shoppingCarts.find(cart => cart.userId === userLogin.userId);
+        let indexItemCurrentCart = currentCart.items.findIndex(item => item.productId === itemPayed.productId);
+        currentCart.items.splice(indexItemCurrentCart, 1); // Xóa sản phẩm khỏi giỏ hàng của người dùng
+
+        localStorage.setItem("shoppingCarts", JSON.stringify(shoppingCarts));
     });
     orderItemIsPayed.length = 0;
 }
@@ -706,6 +751,7 @@ function hoanTatThanhToan() {
     closeNoneOrderHistory()
     createOrderSummary();
     displayOrderSummary();
+    console.log(orderItemIsPayed);
     deleteItem();               // Xóa các SP đã mua ra khỏi giỏ
 }
 
@@ -881,7 +927,6 @@ function displayBtnWatchCancel() {
     orderHistory.forEach(order => {
         // Lấy orderID
         let orderID = order.querySelector('.orderID').textContent.trim();
-        console.log(orderID);
         // Lấy trạng thái đơn hàng
         let orderStatus = order.querySelector('.orderStatus').textContent.trim();
 

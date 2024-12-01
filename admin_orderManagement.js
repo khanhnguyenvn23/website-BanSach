@@ -26,8 +26,6 @@ for (let i = 0; i < menuItems.length; i++) {
         });
     }
 
-
-
     function hienThiDonHang(orderList) {
         const mainContent = document.getElementById("admin_content");
     
@@ -259,12 +257,7 @@ function locDonHangTheoDiaChi(orderList) {
         const isDistrictMatch = districtId ? districtId === order.District : true;
         const isWardMatch = wardId ? wardId === order.Ward : true;
         return isProvinceMatch && isDistrictMatch && isWardMatch;
-    });
-}
-
-
-
-// Hàm lọc và hiển thị đơn hàng
+    });}
 function filterOrders() {
     const orderList = JSON.parse(localStorage.getItem("orderList")) || [];
     const selectedStatus = document.getElementById("statusFilter").value;

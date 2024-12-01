@@ -32,6 +32,7 @@
           </div>
         <div class="user-menu">
             <div class="account-dropdown">
+              <span id="username-display"></span>
                 <a href="#" id="login-link"><i class="fas fa-user"></i> Tài khoản</a>
                 <div class="dropdown-content">
                     <a href="#" id="logout-link"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
@@ -39,8 +40,7 @@
                 </div>
             </div>
           <a href="#" id="logout-link" style="display: none;"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
-          <a href="#" class="user-btn" id="account-info-link" style="display: none;"><i class="fa-solid fa-circle-user"></i> Thông tin tài khoản</a>
-          <a href="#"><i class="fas fa-shopping-cart"></i> Giỏ hàng</a>
+          <a href="cart.html"><i class="fas fa-shopping-cart"></i> Giỏ hàng</a>
         </div>
       </header>
       <!--đưa lên -->
@@ -181,6 +181,7 @@
               id="register-username"
               placeholder="Tên đăng nhập"
             />
+            <span class="form-message-username form-message"></span>
           </div>
           <div class="input-group">
             <input

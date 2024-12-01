@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Trang Admin</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="admin_style.css">
+        <link rel="stylesheet" href="./assets/icon/fontawesome-free-6.6.0-web/fontawesome-free-6.6.0-web/css/all.css">
+      
+    </head>
+    <body>
+        <div id="admin_all">
+            <div id="admin_header">
+                <img src="./assets/images/logo.png" alt="" id="admin_logo">
+                <div id="admin_account">
+                    <i class="fa-solid fa-user"></i>
+                    <span id="name_account"></span>
+                </div>
+            </div> 
+            <div id="admin_workplace">
+                    <ul id="admin_left-menu">
+                        <li class="nav_left-menu first active" onclick="Show_Admin_infor();thoatra();">
+                            <i class="fa-solid fa-user-gear"></i>
+                            <span>Thông tin Admin</span>
+                        </li>
+                        <li class="nav_left-menu" onclick="Show_doanh_thu();thoatra();">
+                            <i class="fa-solid fa-chart-line"></i>
+                            <span>Doanh thu</span>
+                        </li>
+                        <li class="nav_left-menu" onclick="showUser();thoatra();">
+                            <i class="fa-solid fa-users-gear"></i>
+                            <span>Khách hàng</span>
+                        </li>
+                        <li class="nav_left-menu" id="sanpham" onclick="rendersanpham()">
+                            <i class="fa-brands fa-product-hunt"></i>
+                            <span>Sản phẩm</span>
+                        </li>
+                        <li class="nav_left-menu"onclick="thoatra()">
+                            <i class="fa-regular fa-clipboard"></i>
+                            <span>Đơn hàng</span>
+                        </li>
+                    </ul>
+
+            <!-------------------------------------form đăng nhập trang admin--------------------------------------------->
+            <div id="form_login_Admin">
+                <div id="LoiChaoToiAd">Chào mừng đến trang Admin</div>
+                <div id="Yeucau">Vui lòng đăng nhập</div>
+                <form action="login_Admin" id="login_Admin">
+                    <label for="Admin_Name">Tên đăng nhập:</label>
+                    <input type="text" name="" id="Admin_Name">
+                    <label for="Admin_Password" id="ben_duoi">Mật khẩu:</label>
+                    <input type="text" name="" id="Admin_Password">
+                    <input type="button" name="btnLA" id="login_Admin_bnt" value="Đăng nhập" onclick="Login_Admin()">
+                </form>
+            </div>
+             <!----------------------------------form thêm khách hàng---------------------------------->
+                <div id="nganThoat"></div>
+                <div id="nganThoat2"></div>
+                <div id="form_add_infor">
+                    <div id="thoat_form" onclick="HideForm_Add_User()"><i class="fa-solid fa-xmark"></i></div>
+                    <form action="add_user" id="add_user">
+                        <div class="text_infor">Thông tin khách hàng:</div>
+                        <div id="infor_user">
+                            <input type="text" name="ho_va_ten" id="Hoten" placeholder="Họ và tên">
+                            <input type="text" name="SDT" id="SDT" placeholder="Số điện thoại" maxlength="10">
+                            <label for="Duong_soNha">Địa chỉ:</label>
+                            <input type="text" name="Duong_soNha" id="Duong_soNha" placeholder="Tên đường/số nhà">
+                            <div id="chon_diachi">
+                                <select id="User_Phuong-xa">
+                                    <option value="0" selected>Phường/xã</option>
+                                </select>
+                                <select id="User_Quan-huyen" onchange="HienPhuongXaUser()">
+                                    <option value="0" selected>Quận/huyện</option>
+                                </select>
+                                <select id="User_Tinh-tp" onchange="HienQuanUser()">
+                                    <option value="0" selected>Tỉnh/thành phố</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="text_infor">Thông tin tài khoản:</div>
+                        <div id="user_account">
+                            <input type="text" name="tenDangnhap" id="tenDangnhap" placeholder="Tên đăng nhập">
+                            <input type="text" name="mkhau" id="mkhau" placeholder="Mật khẩu">
+                            <input type="text" name="re_mkhau" id="re_mkhau" placeholder="Nhập lại mật khẩu">
+                        </div>
+                        <input type="button" value="Thêm +" id="add_button" onclick="AddUser()">
+                    </form>
+                </div>
+
+                 <!----------------------------bảng thông tin chi tiết người dùng-------------------------->
+                <div id="Show_user_Chitiet_va_Sua">
+                    <div id="CSUser_thoat" onclick="exitCSUser()"><i class="fa-solid fa-xmark"></i></div>
+                    <div id="CSUser_show">
+                    </div>
+                </div>
+
+                <!----------------------------------bảng chỉnh sửa người dùng-------------------------------->
+                <div id="Set_User">
+                    <div id="Thoat_Set_User" onclick="Thoat_Set_User()"><i class="fa-solid fa-xmark"></i></div>
+                    <div id="CSUser_show2">
+                        <form action="set_user_form" id="set_user_form">
+                            <div class="text_infor">Thông tin khách hàng:</div>
+                            <div id="Set_infor_user">
+                                <input type="text" name="ho_va_ten_set" id="Set_Hoten" placeholder="Họ và tên">
+                                <input type="text" name="SDT_set" id="Set_SDT" placeholder="Số điện thoại" maxlength="10">
+                                <label for="Set_Duong_soNha">Địa chỉ:</label>
+                                <input type="text" name="Duong_soNha_set" id="Set_Duong_soNha" placeholder="Tên đường/số nhà">
+
+                                <div id="Set_diachi_user">
+                                    <select id="Set_User_Phuong-xa">
+                                        <option value="0" selected>Phường/xã</option>
+                                    </select>
+                                    <select id="Set_User_Quan-huyen" onchange="Set_HienPhuongXaUsert()">
+                                        <option value="0" selected>Quận/huyện</option>
+                                    </select>
+                                    <select id="Set_User_Tinh-tp" onchange="Set_HienQuanUser()">
+                                        <option value="0" selected>Tỉnh/thành phố</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="text_infor">Thông tin tài khoản:</div>
+                            <div id="Set_user_account">
+                                <input type="text" name="Set_tenDangnhap" id="Set_tenDangnhap" placeholder="Tên đăng nhập">
+                                <input type="text" name="Set_mkhau" id="Set_mkhau" placeholder="Mật khẩu">
+                                <input type="text" name="Set_re_mkhau" id="Set_re_mkhau" placeholder="Nhập lại mật khẩu">
+                            </div>
+                            <input type="button" value="Xác nhận" id="Set_button">
+                        </form>
+                    </div>
+                </div>
+                <!-- ------------------------- Bảng các hoá đơn trong thống kê ----------------------------- -->
+                <div id="bang_hd_thong_ke"></div>
+                <!-- ------------------------- Bảng chi tiết hoá đơn trong thống kê ----------------------------- -->
+                <div id="chitiet_hd_thongke"></div>
+
+                <div id="admin_content"></div>
+            </div>
+        </div>
+        <div class="themsanpham">
+<!-- <div class="chuasanpham"><img class="anhsanpham"src="./assets/images/sanpham1.webp" alt=""><div class="tensanpham">tôi thấy hoa vàng trên cỏ xanh</div><div class="suasanpham"><i class="fa-solid fa-gear"></i></div><div class="xoasanpham"><i class="fa-solid fa-xmark"></i></div></div>
+<div class="chuasanpham"><img class="anhsanpham"src="./assets/images/sanpham1.webp" alt=""><div class="tensanpham">tôi thấy hoa vàng trên cỏ xanh</div><div class="suasanpham"><i class="fa-solid fa-gear"></i></div><div class="xoasanpham"><i class="fa-solid fa-xmark"></i></div></div> -->
+    
+        </div>
+        <div class="themsuaxoa">
+            <div>
+                <!-- Input file để chọn ảnh -->
+                <div class="themmoi anh1">
+                    <input type="file" id="imageFile" accept="image/*">
+                </div>
+                <!-- Chỗ để hiển thị ảnh xem trước -->
+                <img id="imagePreview" style="width: 400px; height: 300px;margin-left:250px; display: none;" alt="Image preview">
+                
+                <!-- Các trường nhập liệu khác -->
+                <input class="themmoi ten1" type="text" value="tên sách" id="bookName">
+                <input class="themmoi gia1" type="text" value="giá" id="bookPrice">
+                <select class="themmoi loai1" name="thể loại" id="bookCategory">
+                    <option class="themmoi" value="thieunhi">thiếu nhi</option>
+                    <option class="themmoi" value="tinhcam">tình cảm</option>
+                    <option class="themmoi" value="chualanh">chữa lành</option>
+                    <option class="themmoi" value="kynangsong">kỹ năng sống</option>
+                    <option class="themmoi" value="lichsu">lịch sử</option>
+                </select>
+                <input class="themmoi butbam" value="hoàn thành" type="button" id="addProductButton">
+            </div>
+        </div>
+        <script src="admin_main.js"></script>
+        <script src="javascirpt.js"></script>
+    </body>
+</html>
