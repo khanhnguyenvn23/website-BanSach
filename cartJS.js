@@ -1,3 +1,18 @@
+// Không cho vào giỏ hàng nếu chưa đăng nhập
+function preventToCart() {
+    const userLogin = JSON.parse(localStorage.getItem('userLogin'));
+    if (userLogin === null) {
+        document.querySelector('.modal-none-login').classList.remove('hidden');
+        document.querySelector('.modal').classList.remove('hidden');
+    }
+    else {
+        document.querySelector('.modal-none-login').classList.add('hidden');
+        document.querySelector('.modal').classList.add('hidden');
+    }
+}
+preventToCart();
+
+
 // ===========================================================-----------------------------=========================================================
 // ===========================================================      Start Address Cart     =========================================================
 // ===========================================================-----------------------------=========================================================
@@ -27,18 +42,18 @@ getLocalStorageUserLogin()
 function getLocalStorageUserLogin() {
     userLogin = JSON.parse(localStorage.getItem('userLogin'));
     if (userLogin === null) return;
-    document.querySelector('#idName').value = userLogin.fullname;
-    document.querySelector('#idPhoneNumber').value = userLogin.phoneNumber;
+    document.querySelector('#idName').value = userLogin.FullName;
+    document.querySelector('#idPhoneNumber').value = userLogin.Sdt;
 
-    let province = getProvinceNameByID(userLogin.address2);
-    let district = getDistrictNameByID(userLogin.address3);
-    let ward = getWardNameByID(userLogin.address4);
-    let AddressDetail = userLogin.address1 + ", " + ward + ", " + district + ", " + province;
+    let province = getProvinceNameByID(userLogin.Address2);
+    let district = getDistrictNameByID(userLogin.Address3);
+    let ward = getWardNameByID(userLogin.Address4);
+    let AddressDetail = userLogin.Address1 + ", " + ward + ", " + district + ", " + province;
 
     addressInfoList = [
         {
-            userID: userLogin.userId, userFullName: userLogin.fullname, phoneNumber: userLogin.phoneNumber,
-            addressDetail: AddressDetail, province: userLogin.address2, district: userLogin.address3, ward: userLogin.address4
+            UserID: userLogin.UserID, FullName: userLogin.FullName, Sdt: userLogin.Sdt,
+            addressDetail: AddressDetail, province: userLogin.Address2, district: userLogin.Address3, ward: userLogin.Address4
         },
     ];
     address2Deliver = addressInfoList[0];
@@ -64,9 +79,9 @@ function displayAddressInfoList() {
 
             <div class="address-info">
                 <div class="user-basic-info">
-                    <div class="userFullName">${addressInfoList[i].userFullName}</div>
+                    <div class="userFullName">${addressInfoList[i].FullName}</div>
                     <div class="distance"></div>
-                    <div class="phoneNumber">${addressInfoList[i].phoneNumber}</div>
+                    <div class="phoneNumber">${addressInfoList[i].Sdt}</div>
                 </div>
 
                 <div class="address-detail">${addressInfoList[i].addressDetail}</div>
@@ -117,7 +132,7 @@ function getAddressBefore() {
 function changeDeliveInfo() {
     let s = '';
     s += `
-        <div class="buyer-info">${address2Deliver.userFullName} ` + ` ${address2Deliver.phoneNumber}</div>
+        <div class="buyer-info">${address2Deliver.FullName} ` + ` ${address2Deliver.Sdt}</div>
         <div class="address-info">${address2Deliver.addressDetail}</div>
     `;
 
@@ -132,18 +147,28 @@ function getAddress2Deliver() {
         if (address.checked) {
             let addressItem = address.closest('.address-item');
 
-            let userFullName = addressItem.querySelector('.userFullName').textContent;
-            let phoneNumber = addressItem.querySelector('.phoneNumber').textContent;
+            let FullName = addressItem.querySelector('.userFullName').textContent;
+            let Sdt = addressItem.querySelector('.phoneNumber').textContent;
             let addressDetail = addressItem.querySelector('.address-detail').textContent;
 
-            address2Deliver = {
-                userFullName,
-                phoneNumber,
-                addressDetail,
-            };
+            // Lấy thông tin province, district, ward từ addressInfoList dựa vào addressDetail
+            let selectedAddress = addressInfoList.find(addr => addr.addressDetail === addressDetail);
+
+            if (selectedAddress) {
+                address2Deliver = {
+                    UserID: selectedAddress.UserID,
+                    FullName: FullName,
+                    Sdt: Sdt,
+                    addressDetail: addressDetail,
+                    province: selectedAddress.province,
+                    district: selectedAddress.district,
+                    ward: selectedAddress.ward,
+                };
+            }
         }
     });
-    changeDeliveInfo();  // Dùng để đổi địa chỉ hiển thị ở Địa Chỉ Nhận Hàng
+
+    changeDeliveInfo(); // Dùng để đổi địa chỉ hiển thị ở "Địa Chỉ Nhận Hàng"
 }
 
 
@@ -292,44 +317,50 @@ function getWardNameByID(id) {
 // Lưu địa chỉ mới trong giỏ hàng (chỉ sử dụng được ở giỏ hàng)
 function saveNewAddress(provinceID, districtID, wardID) {
     let newAddress = [];
-    newAddress.userID = userLogin.UserID;
-    newAddress.userFullName = userLogin.fullname;
-    newAddress.phoneNumber = userLogin.phoneNumber;
-    newAddress.addressDetail = document.querySelector('#idAddress').value;
-
     let wardName = getWardNameByID(wardID);
     let districtName = getDistrictNameByID(districtID);
     let provinceName = getProvinceNameByID(provinceID);
+
+    newAddress.UserID = userLogin.UserID;
+    newAddress.FullName = userLogin.FullName;
+    newAddress.Sdt = userLogin.Sdt;
+
+    newAddress.addressDetail = document.querySelector('#idAddress').value;
+    newAddress.province = provinceID;
+    newAddress.district = districtID;
+    newAddress.ward = wardID;
 
     // Lấy địa chỉ cụ thể, tỉnh, huyện, xã gộp thành 1.
     newAddress.addressDetail = document.querySelector('#idAddress').value +
         ", " + wardName + ", " + districtName + ", " + provinceName;
 
     addressInfoList.push(newAddress);
-
+    console.log(addressInfoList);
     closeAddNewAddress();    //Đóng bảng tạo địa chỉ mới
     displayAddressInfoList();//Hiển thị thông tin các địa chỉ
     setupAddressSelection(); //chọn cái này sẽ tắt cái kia
     getAddressBefore();      //lấy địa chỉ trước nếu như không xác nhận
-    console.log("Lưu Địa Chỉ mới");
 }
+
+// Nếu chưa cập nhật địa chỉ mới thì không cho mua hàng
+function preventToPaying() {
+    if (!address2Deliver.province || !address2Deliver.district || !address2Deliver.ward) {
+        document.querySelector('.modal-none-address').classList.remove('hidden');
+        document.querySelector('.modal').classList.remove('hidden');
+        return false;
+    }
+    else {
+        console.log("CC");
+        document.querySelector('.modal-none-address').classList.add('hidden');
+        document.querySelector('.modal').classList.add('hidden');
+        return true;
+    }
+}
+
+
 // ===========================================================----------------------------=========================================================
 // ===========================================================      End Address Cart      =========================================================
 // ===========================================================----------------------------=========================================================
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -368,16 +399,20 @@ continueShopping.addEventListener('click', () => {
 })
 
 // Mở bảng Không có sản phẩm nào trong Lịch Sử
-function addNoneOrderHistory() {
-    if (localStorage.getItem('orderList') === null)
-        document.querySelector('.none-orderHistory-list').classList.remove('hidden');
+function noneOrderHistory() {
+    const userLogin = JSON.parse(localStorage.getItem("userLogin"));
+    if (userLogin == null) return;
+    const orderList = JSON.parse(localStorage.getItem('orderList')) || [];
+    for (let i = 0; i < orderList.length; i++) {
+        if (orderList[i].UserID === userLogin.UserID) {
+            document.querySelector('.none-orderHistory-list').classList.add('hidden');
+            return;
+        }
+    }
+    console.log("CC");
+    document.querySelector('.none-orderHistory-list').classList.remove('hidden');
 }
-addNoneOrderHistory();
-
-// Đóng bảng Không có sản phẩm nào trong Lịch Sử
-function closeNoneOrderHistory() {
-    document.querySelector('.none-orderHistory-list').classList.add('hidden');
-}
+noneOrderHistory();
 
 
 // Thêm bớt sản phẩm và tính tiền tổng của 1 sản phẩm
@@ -407,16 +442,15 @@ function themBotSanPham(btn) {
 let orderItems = [];
 function getOrderItems() {
     const userLogin = JSON.parse(localStorage.getItem("userLogin"));
-    
+
     if (userLogin == null) {
-        alert("Có lỗi, bạn chưa đăng nhập.");
-    }
-     else {
+        return;
+    } else {
         // Kiểm tra nếu người dùng đã đăng nhập
         const existingCarts = JSON.parse(localStorage.getItem("shoppingCarts")) || [];
 
         // Tìm giỏ hàng của người dùng trong localStorage
-        const userCart = existingCarts.find(cart => cart.UserId === userLogin.UserId);
+        const userCart = existingCarts.find(cart => cart.UserID === userLogin.UserID);
 
         if (userCart && userCart.items.length > 0) {
             // Nếu giỏ hàng tồn tại và có sản phẩm, gán sản phẩm vào orderItems
@@ -431,13 +465,13 @@ function getOrderItems() {
                         productId: product.productId,
                         name: product.name, // Tên sản phẩm
                         price: product.price, // Giá sản phẩm
-                        img: product.src, // Hình ảnh sản phẩm
-                        quantity: item.quantity || 1, // Số lượng (mặc định là 1 nếu không có)
-                        totalPrice1Item: product.price * (item.quantity || 1), // Tổng giá cho 1 sản phẩm
+                        img: product.img, // Hình ảnh sản phẩm
+                        quantity: 1, // Số lượng (mặc định là 1 nếu không có)
+                        totalPrice1Item: product.price, // Tổng giá cho 1 sản phẩm
                     };
                 }
                 return null; // Trả về null nếu không tìm thấy sản phẩm
-            }).filter(item =>  item!== null); // Lọc bỏ các giá trị null nếu sản phẩm không tồn tại
+            }).filter(item => item !== null); // Lọc bỏ các giá trị null nếu sản phẩm không tồn tại
         } else {
             console.log("Giỏ hàng của người dùng trống.");
         }
@@ -445,16 +479,6 @@ function getOrderItems() {
 }
 getOrderItems();
 
-// Hàm thêm số lượng cho các sản phẩm trong giỏ hàng
-function addQuantity() {
-    for (let i = 0; i < orderItems.length; i++) {
-        orderItems[i].quantity = 1; // Đặt lại số lượng cho mỗi sản phẩm là 1
-        orderItems[i].totalPrice1Item = orderItems[i].price; // Cập nhật giá trị tổng cho sản phẩm
-    }
-}
-
-// Gọi hàm để thêm sản phẩm vào giỏ hàng (nếu cần)
-addQuantity();
 
 // Hiển thị các sản phẩm được thêm trong giỏ
 function displayOrderItems() {
@@ -561,7 +585,7 @@ function muaHang() {
         openAlertNotSelect("mua");
         return;
     }
-
+    if (!preventToPaying()) return;
     thanhToan();
 }
 // Được gọi khi ấn nút Xóa
@@ -587,8 +611,7 @@ function deleteItem() {
         // Xóa trong giỏ localStorage
         const userLogin = JSON.parse(localStorage.getItem("userLogin"));
         const shoppingCarts = JSON.parse(localStorage.getItem("shoppingCarts")) || [];
-
-        const currentCart = shoppingCarts.find(cart => cart.userId === userLogin.userId);
+        const currentCart = shoppingCarts.find(cart => cart.UserID === userLogin.UserID);
         let indexItemCurrentCart = currentCart.items.findIndex(item => item.productId === itemPayed.productId);
         currentCart.items.splice(indexItemCurrentCart, 1); // Xóa sản phẩm khỏi giỏ hàng của người dùng
 
@@ -620,8 +643,8 @@ function quayLaiGioHang() {
 
 // Tạo thuộc tính và thêm cho Tóm tắt mua hàng
 function createOrderSummary() {
-    orderSummary.FullName = address2Deliver.userFullName;
-    orderSummary.Sdt = address2Deliver.phoneNumber;
+    orderSummary.FullName = address2Deliver.FullName;
+    orderSummary.Sdt = address2Deliver.Sdt;
     orderSummary.Address = address2Deliver.addressDetail;
     orderSummary.OrderDate = getDateNow();
     orderSummary.Status = "Chưa xác nhận";
@@ -748,10 +771,9 @@ function hoanTatThanhToan() {
 
     if (!checkInfoCardMethod()) return;
     closeCheckoutSection();
-    closeNoneOrderHistory()
+    noneOrderHistory()
     createOrderSummary();
     displayOrderSummary();
-    console.log(orderItemIsPayed);
     deleteItem();               // Xóa các SP đã mua ra khỏi giỏ
 }
 
@@ -773,27 +795,21 @@ function getDateNow() {
 
 // Hiển thị Tóm tắt Thanh toán
 function displayOrderSummary() {
-    let userFullName = orderSummary.FullName;
-    let userSDT = orderSummary.Sdt;
-    let userAddress = orderSummary.Address;
-    let orderDate = orderSummary.OrderDate;
-    let statusText = orderSummary.Status;
-    let paymentMethod = orderSummary.PaymentMethod;
     let s = `
     <h1>Tóm tắt đơn hàng</h1>
 
         <div class="buyer-info">
             <div class="title">Thông tin người mua:</div>
-            <div class="section-content"><Strong>Tên:</Strong> ${userFullName}</div>
-            <div class="section-content"><Strong>Số điện thoại:</Strong> ${userSDT}</div>
-            <div class="section-content"><Strong>Địa chỉ:</Strong> ${userAddress}</div>
+            <div class="section-content"><Strong>Tên:</Strong> ${orderSummary.FullName}</div>
+            <div class="section-content"><Strong>Số điện thoại:</Strong> ${orderSummary.Sdt}</div>
+            <div class="section-content"><Strong>Địa chỉ:</Strong> ${orderSummary.Address}</div>
         </div>
 
         <div class="order-info">
             <div class="title">Thông tin đơn hàng:</div>
-            <div class="section-content"><Strong>Ngày đặt hàng:</Strong> ${orderDate}</div>
-            <div class="section-content"><Strong>Trạng thái:</Strong> ${statusText}</div>
-            <div class="payment-method"><strong>Phương thức thanh toán:</strong> ${paymentMethod}</div>
+            <div class="section-content"><Strong>Ngày đặt hàng:</Strong> ${orderSummary.OrderDate}</div>
+            <div class="section-content"><Strong>Trạng thái:</Strong> ${orderSummary.Status}</div>
+            <div class="payment-method"><strong>Phương thức thanh toán:</strong> ${orderSummary.PaymentMethod}</div>
             <div class="product-is-payed">
                 <div class="product-table-header">
                     <div class="text-size product-descript">Sản Phẩm</div>
@@ -852,9 +868,9 @@ function saveAsLocalStorage() {
 
     let new_DonHang = {
         OrderID: (DonHang.length + 1) + "",
-        UserID: address2Deliver.userID,
-        FullName: address2Deliver.userFullName,
-        Sdt: address2Deliver.phoneNumber,
+        UserID: address2Deliver.UserID,
+        FullName: address2Deliver.FullName,
+        Sdt: address2Deliver.Sdt,
         Address: address2Deliver.addressDetail.trim(),
         Province: address2Deliver.province,
         District: address2Deliver.district,
@@ -865,7 +881,6 @@ function saveAsLocalStorage() {
         PaymentMethod: orderSummary.PaymentMethod,
         Status: "0",
     };
-    console.log(new_DonHang.OrderItems[0]);
     DonHang.push(new_DonHang);
     localStorage.setItem('orderList', JSON.stringify(DonHang));
 }
@@ -886,7 +901,7 @@ function displayOrderHistory() {
     const orderHistoryList = JSON.parse(localStorage.getItem('orderList'));
     if (orderHistoryList === null) return;
     for (let i = 0; i < orderHistoryList.length; i++) {
-        if (orderHistoryList[i].UserID !== userLogin.userId) continue;
+        if (orderHistoryList[i].UserID !== userLogin.UserID) continue;
         const order = orderHistoryList[i];
         let orderItems = '';
         let orderTotalPrice = 0;
