@@ -1,4 +1,4 @@
- localStorage.removeItem("shoppingCarts");
+ localStorage.removeItem("product");
 function createProduct() {
     if (localStorage.getItem('product') === null) {
         var productArray = [
@@ -510,7 +510,6 @@ var them=document.querySelector('.them');
     var themsuaxoa=document.querySelector('.themsuaxoa');
     themsuaxoa.style.display="block";
 }
-// Hàm để xử lý sự kiện chọn ảnh và hiển thị ảnh xem trước
 document.getElementById("imageFile").addEventListener("change", function(event) {
     var file = event.target.files[0]; // Lấy file ảnh được chọn
     var reader = new FileReader();
@@ -542,7 +541,7 @@ document.getElementById("addProductButton").onclick = function() {
     var reader = new FileReader();
     reader.onload = function(event) {
         var newProduct = {
-            productId: Date.now(),
+            productId: (JSON.parse(localStorage.getItem('product')) || []).length + 1,
             src: event.target.result,  // Đường dẫn ảnh
             category: bookCategory,
             name: bookName,
@@ -559,6 +558,8 @@ document.getElementById("addProductButton").onclick = function() {
 
     reader.readAsDataURL(imageFile); // Đọc ảnh dưới dạng Data URL
 };
-
-// Hàm để render lại danh sách sản phẩm
-
+function outra1(){
+var thoathem=document.querySelector('.thoatthem');
+var outra=document.querySelector('.themsuaxoa');
+outra.style.display="none";
+}

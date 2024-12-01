@@ -143,24 +143,21 @@
         </div>
         <div class="themsuaxoa">
             <div>
-                <!-- Input file để chọn ảnh -->
                 <div class="themmoi anh1">
-                    <input type="file" id="imageFile" accept="image/*">
+                    <input type="file" id="imageFile">
                 </div>
-                <!-- Chỗ để hiển thị ảnh xem trước -->
-                <img id="imagePreview" style="width: 400px; height: 300px;margin-left:250px; display: none;" alt="Image preview">
-                
-                <!-- Các trường nhập liệu khác -->
-                <input class="themmoi ten1" type="text" value="tên sách" id="bookName">
-                <input class="themmoi gia1" type="text" value="giá" id="bookPrice">
+                <img id="imagePreview" src="" alt="Xem trước ảnh">
+                <input class="themmoi ten1" type="text" id="bookName" placeholder="Tên sản phẩm">
+                <input class="themmoi gia1" type="text" id="bookPrice" placeholder="Giá">
                 <select class="themmoi loai1" name="thể loại" id="bookCategory">
-                    <option class="themmoi" value="thieunhi">thiếu nhi</option>
-                    <option class="themmoi" value="tinhcam">tình cảm</option>
-                    <option class="themmoi" value="chualanh">chữa lành</option>
-                    <option class="themmoi" value="kynangsong">kỹ năng sống</option>
-                    <option class="themmoi" value="lichsu">lịch sử</option>
+                    <option value="thieunhi">Thiếu Nhi</option>
+                    <option value="tinhcam">Tình Cảm</option>
+                    <option value="chualanh">Chữa Lành</option>
+                    <option value="kynangsong">Kỹ Năng Sống</option>
+                    <option value="lichsu">Lịch Sử</option>
                 </select>
-                <input class="themmoi butbam" value="hoàn thành" type="button" id="addProductButton">
+                <button class="butbam"id="addProductButton">Hoàn Thành</button>
+                <i class="fa-solid fa-xmark thoatthem" onclick="outra1()"></i>
             </div>
         </div>
         <script src="admin_main.js"></script>

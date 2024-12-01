@@ -1102,7 +1102,9 @@ height:50px;
 margin-left:150px;
 margin-top: 20px;
 }
-
+.ten1{
+    margin-top:100px;
+}
 .butbam{
     height:50px;
     width:100px;
@@ -1112,4 +1114,17 @@ margin-top: 20px;
 .themsuaxoa{
     display:none;
 
+}
+#imagePreview {
+    width: 120px;
+    height:170px;  
+    margin-left: 150px;
+    margin-top: 50px;
+    display: none;
+}
+.thoatthem{
+    position: absolute;
+    font-size: 50px;
+    top:0;
+    right:0;
 }
