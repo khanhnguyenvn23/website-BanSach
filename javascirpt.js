@@ -508,6 +508,8 @@ function themsp(){
 var them=document.querySelector('.them');
     var themsuaxoa=document.querySelector('.themsuaxoa');
     themsuaxoa.style.display="block";
+    document.querySelector('.a111').style.display = "block";
+    document.querySelector('.a222').style.display = "none";
 }
 document.getElementById("imageFile").addEventListener("change", function(event) {
     var file = event.target.files[0]; // Lấy file ảnh được chọn
@@ -640,6 +642,8 @@ themsanpham.innerHTML=s;
     
     var themsanpham=document.querySelector('.themsuaxoa');
     themsanpham.style.display="block";
+    document.querySelector('.a111').style.display = "none";
+    document.querySelector('.a222').style.display = "block";
     document.getElementById("addProductButton").onclick = function() {
     var bookName = document.getElementById("bookName").value;
     var bookPrice = document.getElementById("bookPrice").value;
@@ -679,6 +683,7 @@ function saveProductData(productId, bookName, bookPrice, bookCategory) {
 
         // Cập nhật lại danh sách sản phẩm (nếu cần thiết)
         renderProductList();  // Cập nhật giao diện (nếu bạn cần hiển thị lại danh sách)
+     
     } else {
         alert("Không tìm thấy sản phẩm để sửa.");
     }

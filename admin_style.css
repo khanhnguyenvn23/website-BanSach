@@ -1389,18 +1389,19 @@ body{
     position: absolute;
     background-color: #fff;
     width:78%;
-    height:5000px;
+    height:auto;
     top:65px;
     left:310px;
     display:none;
 }
 .chuasanpham{
+    margin-left: 100px ;
     height:170px;
     width:100%;
     display:flex;
-    border-left: 2px solid black;
+    /* border-left: 2px solid black; */
     border-right: 2px solid black;
-    border-top: 2px solid black;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
 }
 .tensanpham{
     width:35%;
@@ -1439,6 +1440,7 @@ body{
     font-size: 50px;
     text-align: center;
     padding-top:30px;
+    margin-left: 100px;
 }
 .them:hover{
     background-color: #FFBF00;
@@ -1451,7 +1453,7 @@ body{
     top: 0;
     left: 25%;
     right: 25%;
-    background-color: rgb(245,245,250);/* Xanh dương chuyển sang xanh đậm hơn */
+    background-color: #fff;/* Xanh dương chuyển sang xanh đậm hơn */
     z-index: 10000000000000;
     border: 5px solid #007bff; /* Màu xanh đậm hơn cho đường viền */
     border-radius: 15px;
@@ -1503,8 +1505,16 @@ margin-top: 20px;
 }
 .a111{
 font-family: 'Times New Roman', Times, serif;
-margin-left: 230px;
+margin-left: 225px;
 color:#000;
 font-size: 40px;
 margin-top: 10px;
 }
+.a222{
+    font-family: 'Times New Roman', Times, serif;
+    margin-left: 225px;
+    color:#000;
+    font-size: 40px;
+    margin-top: 10px;
+    display :none;
+   }

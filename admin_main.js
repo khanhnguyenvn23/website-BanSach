@@ -1,4 +1,4 @@
-//localStorage.clear();
+// localStorage.clear();
 window.onload = function(){
     KhoiTaoKhachHang();
     createProduct();
@@ -22,9 +22,9 @@ menuItems.forEach(item => {
 function KhoiTaoKhachHang(){
     if(JSON.parse(localStorage.getItem('USER')) === null){
         var USERS = [
-            {UserID: 10001, FullName: 'Nguyễn Văn A',UserPassword: '123456', UserName: 'NguyenLam1', Sdt: '0123456789', Status: '1', Address1: 'số 60 Nguyễn Tri Phương', Address2: '1', Address3: '1', Address4: '1'},
+            {UserID: 10001, FullName: 'Nguyễn Văn A',UserPassword: '123456', UserName: 'NguyenLam1', Sdt: '0123456788', Status: '1', Address1: 'số 60 Nguyễn Tri Phương', Address2: '1', Address3: '1', Address4: '1'},
             {UserID: 10002, FullName: 'Nguyễn Văn B',UserPassword: '123456' ,UserName: 'NguyenLam2', Sdt: '0123456789', Status: '1', Address1: 'Số 65 Lê Lợi', Address2: '3', Address3: '2', Address4: '1', },
-            {UserID: 10003, FullName: 'Nguyễn Văn C',UserPassword: '123456' ,UserName: 'NguyenLam3', Sdt: '0123456789', Status: '0', Address1: 'Số 8 Lê Lai', Address2: '16', Address3: '4', Address4: '1', },
+            {UserID: 10003, FullName: 'Nguyễn Văn C',UserPassword: '123456' ,UserName: 'NguyenLam3', Sdt: '0123456780', Status: '0', Address1: 'Số 8 Lê Lai', Address2: '16', Address3: '4', Address4: '1', },
         ];
         localStorage.setItem('USER',JSON.stringify(USERS));
     }
@@ -51,7 +51,7 @@ function KhoiTaoDonHang(){
             OrderID: 1,
             UserID: 10001,
             FullName: 'Nguyễn Văn A',
-            Address: 'số 60 Nguyễn Tri Phương',
+            Address: 'số 60 Nguyễn Tri Phương, Bến Thành, Quận 1, TP.Hồ Chí Minh',
             OrderDate: '23/11/2024',
             Sdt: '0123456789',
             Status: '2',
@@ -71,7 +71,7 @@ function KhoiTaoDonHang(){
             OrderID: 2,
             UserID: 10002,
             FullName: 'Nguyễn Văn B',
-            Address: 'Số 65 Lê Lợi',
+            Address: 'Số 65 Lê Lợi, Phường 1, Quận 3, TP.Hồ Chí Minh',
             OrderDate: '23/11/2024',
             Sdt: '0123456789',
             Status: '2',
@@ -90,7 +90,7 @@ function KhoiTaoDonHang(){
             OrderID: 3,
             UserID: 10003,
             FullName: 'Nguyễn Văn C',
-            Address: 'Số 8 Lê Lai',
+            Address: 'Số 8 Lê Lai, An Lạc, Quận Bình Tân, TP.Hồ Chí Minh',
             OrderDate: '24/11/2024',
             Sdt: '0123456789',
             Status: '2',
@@ -107,7 +107,7 @@ function KhoiTaoDonHang(){
             OrderID: 4,
             UserID: 10001,
             FullName: 'Nguyễn Văn A',
-            Address: 'số 60 Nguyễn Tri Phương',
+            Address: 'số 60 Nguyễn Tri Phương, Bến Thành, Quận 1, TP.Hồ Chí Minh',
             OrderDate: '25/11/2024',
             Sdt: '0123456789',
             Status: '2',
@@ -126,7 +126,7 @@ function KhoiTaoDonHang(){
             OrderID: 5,
             UserID: 10002,
             FullName: 'Nguyễn Văn B',
-            Address: 'Số 65 Lê Lợi',
+            Address: 'Số 65 Lê Lợi, Phường 1, Quận 3, TP.Hồ Chí Minh',
             OrderDate: '26/11/2024',
             Sdt: '0123456789',
             Status: '0',
@@ -722,7 +722,7 @@ function hien_chitiet_hd_thongke(orderID){
             s+= '<p>Mã khách hàng: ' + data[i].UserID + '</p>';
             s+= '<p>Tên khách hàng: '+ data[i].FullName + '</p>';
             s+= '<p>Số điện thoại: ' +data[i].Sdt + '</p>';
-            s+= '<p>Địa chỉ nhận hàng: '+ data[i].Address + ', ' + Lay_Phuong_Xa_Tu_ID(data[i].Ward) + ', ' +Lay_Quan_Huyen_Tu_ID(data[i].District) + ', ' + Lay_Tinh_Tu_ID(data[i].Province) + '</p>';
+            s+= '<p>Địa chỉ nhận hàng: '+ data[i].Address +'</p>';
             s+= '<p>Phương thức thanh toán: ' +data[i].PaymentMethod + '</p>'
             s+= '<p class="title_infor">Các sản phẩm:</p>';
             s+= '<div id="ds_sp" > ';
@@ -1121,6 +1121,17 @@ function KT_UserName(username){
     return false;
 }
 
+//Kiểm tra trùng std;
+function Kt_Trung_std(sdt){
+    var data = JSON.parse(localStorage.getItem('USER'));
+    for(var i = 0; i < data.length; i++){
+        if(sdt === data[i].Sdt){
+            return true;
+        }
+    }
+    return false;
+}
+
 /*Chuyển trạng thái sang lời */
 function ChuyenTrangThai(it){
     if(it === '0'){
@@ -1199,6 +1210,12 @@ function AddUser(){
     }
     if(kiem_tra_so_dien_thoai(newUserSdt.value) === false){
         alert('Số điện thoại không đúng');
+        newUserSdt.focus();
+        newUserSdt.select();
+        return false;
+    }
+    if(Kt_Trung_std(newUserSdt.value)){
+        alert('Số điện thoại đã tồn tại, vui lòng nhập lại!');
         newUserSdt.focus();
         newUserSdt.select();
         return false;
@@ -1431,6 +1448,12 @@ function Xac_nhan_Chinh_Sua_User(idUser){
     }
     if(kiem_tra_so_dien_thoai(newSdt.value) === false){
         alert('Số điện thoại không đúng');
+        newSdt.focus();
+        newSdt.select();
+        return false;
+    }
+    if(Kt_Trung_std(newSdt.value)){
+        alert('Số điện thoại đã tồn tại, vui lòng nhập lại!');
         newSdt.focus();
         newSdt.select();
         return false;
