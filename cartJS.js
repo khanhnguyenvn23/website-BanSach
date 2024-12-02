@@ -465,7 +465,7 @@ function getOrderItems() {
                         productId: product.productId,
                         name: product.name, // Tên sản phẩm
                         price: product.price, // Giá sản phẩm
-                        img: product.img, // Hình ảnh sản phẩm
+                        img: product.src, // Hình ảnh sản phẩm
                         quantity: 1, // Số lượng (mặc định là 1 nếu không có)
                         totalPrice1Item: product.price, // Tổng giá cho 1 sản phẩm
                     };
@@ -867,7 +867,7 @@ function saveAsLocalStorage() {
     if (DonHang === null) DonHang = [];
 
     let new_DonHang = {
-        OrderID: (DonHang.length + 1) + "",
+        OrderID: (DonHang.length + 1) ,
         UserID: address2Deliver.UserID,
         FullName: address2Deliver.FullName,
         Sdt: address2Deliver.Sdt,

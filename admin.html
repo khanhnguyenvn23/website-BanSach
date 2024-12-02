@@ -5,12 +5,11 @@
         <meta charset="utf-8">
         <link rel="stylesheet" href="admin_style.css">
         <link rel="stylesheet" href="./assets/icon/fontawesome-free-6.6.0-web/fontawesome-free-6.6.0-web/css/all.css">
-      
     </head>
     <body>
         <div id="admin_all">
             <div id="admin_header">
-                <img src="./assets/images/logo.png" alt="" id="admin_logo">
+                <img src="assets/images/logo.png" alt="" id="admin_logo">
                 <div id="admin_account">
                     <i class="fa-solid fa-user"></i>
                     <span id="name_account"></span>
@@ -18,15 +17,15 @@
             </div> 
             <div id="admin_workplace">
                     <ul id="admin_left-menu">
-                        <li class="nav_left-menu first active" onclick="Show_Admin_infor();thoatra();">
+                        <li class="nav_left-menu first active" onclick="Show_Admin_infor();thoatra()">
                             <i class="fa-solid fa-user-gear"></i>
                             <span>Thông tin Admin</span>
                         </li>
-                        <li class="nav_left-menu" onclick="Show_doanh_thu();thoatra();">
+                        <li class="nav_left-menu" onclick="Show_doanh_thu();thoatra()">
                             <i class="fa-solid fa-chart-line"></i>
                             <span>Doanh thu</span>
                         </li>
-                        <li class="nav_left-menu" onclick="showUser();thoatra();">
+                        <li class="nav_left-menu" onclick="showUser();thoatra()">
                             <i class="fa-solid fa-users-gear"></i>
                             <span>Khách hàng</span>
                         </li>
@@ -34,24 +33,24 @@
                             <i class="fa-brands fa-product-hunt"></i>
                             <span>Sản phẩm</span>
                         </li>
-                        <li class="nav_left-menu"onclick="thoatra()">
+                        <li class="nav_left-menu" onclick="hienThiDonHang();thoatra()">
                             <i class="fa-regular fa-clipboard"></i>
                             <span>Đơn hàng</span>
                         </li>
                     </ul>
 
-            <!-------------------------------------form đăng nhập trang admin--------------------------------------------->
-            <div id="form_login_Admin">
-                <div id="LoiChaoToiAd">Chào mừng đến trang Admin</div>
-                <div id="Yeucau">Vui lòng đăng nhập</div>
-                <form action="login_Admin" id="login_Admin">
-                    <label for="Admin_Name">Tên đăng nhập:</label>
-                    <input type="text" name="" id="Admin_Name">
-                    <label for="Admin_Password" id="ben_duoi">Mật khẩu:</label>
-                    <input type="text" name="" id="Admin_Password">
-                    <input type="button" name="btnLA" id="login_Admin_bnt" value="Đăng nhập" onclick="Login_Admin()">
-                </form>
-            </div>
+                <!-------------------------------------form đăng nhập trang admin--------------------------------------------->
+                <div id="form_login_Admin">
+                    <div id="LoiChaoToiAd">Chào mừng đến trang Admin</div>
+                    <div id="Yeucau">Vui lòng đăng nhập</div>
+                    <form action="login_Admin" id="login_Admin">
+                        <label for="Admin_Name">Tên đăng nhập:</label>
+                        <input type="text" name="" id="Admin_Name">
+                        <label for="Admin_Password" id="ben_duoi">Mật khẩu:</label>
+                        <input type="text" name="" id="Admin_Password">
+                        <input type="button" name="btnLA" id="login_Admin_bnt" value="Đăng nhập" onclick="Login_Admin()">
+                    </form>
+                </div>
              <!----------------------------------form thêm khách hàng---------------------------------->
                 <div id="nganThoat"></div>
                 <div id="nganThoat2"></div>
@@ -132,34 +131,120 @@
                 <div id="bang_hd_thong_ke"></div>
                 <!-- ------------------------- Bảng chi tiết hoá đơn trong thống kê ----------------------------- -->
                 <div id="chitiet_hd_thongke"></div>
+                <!-- form đơn hàng -->
+                                 <!-------------- form Lọc ------------->
+                        <!-- Modal lọc -->
+                <div id="filterModal" class="modal">
+                    <div class="modal-content">
+                        <span id="closeModal" class="close-btn">&times;</span>
+                        <div class="title-box">
+                            <h3 class="filter-title">LỌC ĐƠN HÀNG</h3>
+                        </div>
+                        <div class="filter-options"> 
+
+                            <!-- Lọc theo ngày  -->
+                            <div class="filter-row">
+                                <div class="filter-item">
+                                    <label for="fromDate">Từ ngày:</label>
+                                    <input type="date" id="fromDate">
+                                </div>
+                                <div class="filter-item">
+                                    <label for="toDate">Đến ngày:</label>
+                                    <input type="date" id="toDate">
+                                </div>
+                            </div>
+
+                            <!-- Lọc theo trạng thái -->
+                            <div class="filter-row">
+                                <div class="filter-item">
+                                    <label for="statusFilter">Trạng thái đơn hàng:</label>
+                                    <select id="statusFilter">
+                                        <option value="" disabled selected>Chọn trạng thái</option>
+                                        <option value="0">Chưa xử lý</option>
+                                        <option value="1">Đã xử lý</option>
+                                        <option value="2">Đã giao</option>
+                                        <option value="3">Đã hủy</option>
+                                        <option value="">Tất cả</option>
+                                    </select>
+                                </div>
+
+                                <!-- Lọc theo địa chỉ -->
+                                <div class="filter-item">
+                                    <label for="provinces">Tỉnh/Thành:</label>
+                                    <select id="provinces">
+                                        <option value="" disabled selected>Chọn tỉnh/thành</option>
+                                        <!-- Các tỉnh sẽ được điền động -->
+                                    </select>
+                                </div>
+
+                                <div class="filter-item">
+                                    <label for="districts">Quận/Huyện:</label>
+                                    <select id="districts"> -->
+                                        <option value="" disabled selected>Chọn quận/huyện</option>
+                                        <!-- Các quận sẽ được điền động -->
+                                    </select>
+                                </div>
+
+                                <div class="filter-item">
+                                    <label for="wards">Phường/Xã:</label>
+                                    <select id="wards">
+                                        <option value="" disabled selected>Chọn phường/xã</option>
+                                        <!-- Các phường sẽ được điền động -->
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Xác nhận lọc -->
+                            <button id="confirmFilter" class="confirm-btn">Xác nhận</button>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                
+                <!------------- form xem chi tiết ---------------->
+                <div id="orderDetailModal" class="modal">
+                    <div class="modal-content">
+                        <span id="closeDetailModal" class="close-btn">&times;</span>
+                            <div id="orderDetailContent">    </div>
+                        </div>
+                </div>
 
                 <div id="admin_content"></div>
+                <div class="themsanpham">
+                    <!-- <div class="chuasanpham"><img class="anhsanpham"src="./assets/images/sanpham1.webp" alt=""><div class="tensanpham">tôi thấy hoa vàng trên cỏ xanh</div><div class="suasanpham"><i class="fa-solid fa-gear"></i></div><div class="xoasanpham"><i class="fa-solid fa-xmark"></i></div></div>
+                    <div class="chuasanpham"><img class="anhsanpham"src="./assets/images/sanpham1.webp" alt=""><div class="tensanpham">tôi thấy hoa vàng trên cỏ xanh</div><div class="suasanpham"><i class="fa-solid fa-gear"></i></div><div class="xoasanpham"><i class="fa-solid fa-xmark"></i></div></div> -->
+                        
+                            </div>
+                            <div class="themsuaxoa">
+                                <div>
+                                    <div class="themmoi anh1">
+                                        <input type="file" id="imageFile">
+                                    </div>
+                                    <img id="imagePreview" src="" alt="Xem trước ảnh">
+                                    <input class="themmoi ten1" type="text" id="bookName" placeholder="Tên sản phẩm">
+                                    <input class="themmoi gia1" type="text" id="bookPrice" placeholder="Giá">
+                                    <select class="themmoi loai1" name="thể loại" id="bookCategory">
+                                        <option value="thieunhi">Thiếu Nhi</option>
+                                        <option value="tinhcam">Tình Cảm</option>
+                                        <option value="chualanh">Chữa Lành</option>
+                                        <option value="kynangsong">Kỹ Năng Sống</option>
+                                        <option value="lichsu">Lịch Sử</option>
+                                    </select>
+                                    <button class="butbam"id="addProductButton">Hoàn Thành</button>
+                                    <i class="fa-solid fa-xmark thoatthem" onclick="outra1()"></i>
+                                </div>
+                            </div>
             </div>
         </div>
-        <div class="themsanpham">
-<!-- <div class="chuasanpham"><img class="anhsanpham"src="./assets/images/sanpham1.webp" alt=""><div class="tensanpham">tôi thấy hoa vàng trên cỏ xanh</div><div class="suasanpham"><i class="fa-solid fa-gear"></i></div><div class="xoasanpham"><i class="fa-solid fa-xmark"></i></div></div>
-<div class="chuasanpham"><img class="anhsanpham"src="./assets/images/sanpham1.webp" alt=""><div class="tensanpham">tôi thấy hoa vàng trên cỏ xanh</div><div class="suasanpham"><i class="fa-solid fa-gear"></i></div><div class="xoasanpham"><i class="fa-solid fa-xmark"></i></div></div> -->
-    
-        </div>
-        <div class="themsuaxoa">
-            <div>
-                <div class="themmoi anh1">
-                    <input type="file" id="imageFile">
-                </div>
-                <img id="imagePreview" src="" alt="Xem trước ảnh">
-                <input class="themmoi ten1" type="text" id="bookName" placeholder="Tên sản phẩm">
-                <input class="themmoi gia1" type="text" id="bookPrice" placeholder="Giá">
-                <select class="themmoi loai1" name="thể loại" id="bookCategory">
-                    <option value="thieunhi">Thiếu Nhi</option>
-                    <option value="tinhcam">Tình Cảm</option>
-                    <option value="chualanh">Chữa Lành</option>
-                    <option value="kynangsong">Kỹ Năng Sống</option>
-                    <option value="lichsu">Lịch Sử</option>
-                </select>
-                <button class="butbam"id="addProductButton">Hoàn Thành</button>
-                <i class="fa-solid fa-xmark thoatthem" onclick="outra1()"></i>
-            </div>
-        </div>
+
+
+
+
+
+
+
         <script src="admin_main.js"></script>
         <script src="javascirpt.js"></script>
     </body>

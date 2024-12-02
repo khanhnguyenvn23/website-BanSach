@@ -363,9 +363,9 @@ if (Sdt.length == 0) {
 } else {
   document.querySelector('.form-message-phone').innerHTML = '';
 }
-
+const userAccountList = JSON.parse(localStorage.getItem("USER")) || [];
   if (!presentId) {
-    presentId = 10001;
+    presentId = userAccountList.length+10001;
   }
 
   if (!UserName || !UserPassword || !confirmPassword || !Sdt || !FullName /*|| !address2 || !address3 || !address4*/) {
@@ -377,7 +377,7 @@ if (Sdt.length == 0) {
     alert("Mật khẩu nhập lại không khớp!");
     return;
   }
-  const userAccountList = JSON.parse(localStorage.getItem("USER")) || [];
+  
 
   const isUserNameTaken = userAccountList.some((user) => user.UserName === UserName); // NOTE
   const isSdt = userAccountList.some((user) => user.Sdt == Sdt); //NOTE
@@ -450,7 +450,7 @@ function lockAccount(UserName) {
 }
 // Hàm hiển thị thông tin người dùng trong tài khoản
 function displayUserInfo(user) {
-  if (user.Status === 0) {
+  if (user.Status == 0) {
     alert("Tài khoản của bạn đã bị khóa!");
     return; // Dừng hiển thị thông tin nếu tài khoản bị khóa
 }

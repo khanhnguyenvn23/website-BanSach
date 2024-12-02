@@ -1,4 +1,4 @@
-
+//localStorage.clear();
 window.onload = function(){
     KhoiTaoKhachHang();
     createProduct();
@@ -7,6 +7,7 @@ window.onload = function(){
     KhoiTaoCacDiaChi();
     KhoiTaoAdmin();
     Login_Admin();
+    initFilterModal();   
 };
 
 /* Tạo hiệu ứng khi click và hover cho left menu */
@@ -21,9 +22,9 @@ menuItems.forEach(item => {
 function KhoiTaoKhachHang(){
     if(JSON.parse(localStorage.getItem('USER')) === null){
         var USERS = [
-            {UserID: 10001, FullName: 'Nguyễn Văn A',UserPassword: 'jjjjjj', UserName: 'NguyenLam1', Sdt: '1234567890', Status: '1', Address1: 'dsgdsgdgd', Address2: '1', Address3: '1', Address4: '1'},
-            {UserID: 10002, FullName: 'Nguyễn Văn B',UserPassword: 'jjjjjj' ,UserName: 'NguyenLam2', Sdt: '1234567890', Status: '0', Address1: 'Chưa có', Address2: '0', Address3: '0', Address4: '0', },
-            {UserID: 10003, FullName: 'Nguyễn Văn C',UserPassword: 'jjjjjj' ,UserName: 'NguyenLam3', Sdt: '1234567890', Status: '0', Address1: 'Chưa có', Address2: '0', Address3: '0', Address4: '0', },
+            {UserID: 10001, FullName: 'Nguyễn Văn A',UserPassword: '123456', UserName: 'NguyenLam1', Sdt: '0123456789', Status: '1', Address1: 'số 60 Nguyễn Tri Phương', Address2: '1', Address3: '1', Address4: '1'},
+            {UserID: 10002, FullName: 'Nguyễn Văn B',UserPassword: '123456' ,UserName: 'NguyenLam2', Sdt: '0123456789', Status: '1', Address1: 'Số 65 Lê Lợi', Address2: '3', Address3: '2', Address4: '1', },
+            {UserID: 10003, FullName: 'Nguyễn Văn C',UserPassword: '123456' ,UserName: 'NguyenLam3', Sdt: '0123456789', Status: '0', Address1: 'Số 8 Lê Lai', Address2: '16', Address3: '4', Address4: '1', },
         ];
         localStorage.setItem('USER',JSON.stringify(USERS));
     }
@@ -49,71 +50,96 @@ function KhoiTaoDonHang(){
         {
             OrderID: 1,
             UserID: 10001,
-            FullName: 'Nguyen Van A',
-            Address: 'Số 50, Phan Bội Châu',
+            FullName: 'Nguyễn Văn A',
+            Address: 'số 60 Nguyễn Tri Phương',
             OrderDate: '23/11/2024',
             Sdt: '0123456789',
             Status: '2',
-            TotalOrderItems:220000,
+            TotalOrderItems:439000,
             PaymentMethod: 'Thanh toán khi nhận hàng',
             District: '1', //Huyện
             Province: '1', //Tỉnh
             Ward: '1', // Phường
             OrderItems: [
-                {productId: 40, quantity: 1, img: 'acest/temp/tmp.webp', name: 'Vẽ em bằng nỗi nhớ',cateory: 'tinhcam', price: 220000, totalPrice1Item: 220000},
+                {productId: 1, quantity: 1, img: 'assets/images/sanpham1.webp', name: 'Tôi thấy hoa vàng trên cỏ xanh',cateory: 'tuoitho', price: 99000, totalPrice1Item: 99000},
+                { productId: 2,quantity: 2, img: 'assets/images/sanpham2.webp', name: '3 người thầy vỹ đại' ,category: 'kynangsong', price: 60000, totalPrice1Item: 120000 },
+                { productId: 4,quantity: 1, img: 'assets/images/sanpham4.webp', category: 'tuoitho', name: 'Cây cam ngọt của tôi', price: 220000, totalPrice1Item: 220000},
             ]
         },
+
         {
             OrderID: 2,
             UserID: 10002,
-            FullName: 'Nguyen Van B',
-            Address: 'Số 51, Phan Chu Trinh',
-            OrderDate: '26/11/2024',
+            FullName: 'Nguyễn Văn B',
+            Address: 'Số 65 Lê Lợi',
+            OrderDate: '23/11/2024',
             Sdt: '0123456789',
             Status: '2',
-            TotalOrderItems:220000,
+            TotalOrderItems:319000,
             PaymentMethod: 'Thanh toán khi nhận hàng',
-            District: '1', //Huyện
-            Province: '1', //Tỉnh
-            Ward: '2', // Phường
-            OrderItems: [
-                {productId: 41, quantity: 1, img: 'acest/temp/tmp.webp', name: 'Vẽ em bằng huhu',cateory: 'tinhcam', price: 220000, totalPrice1Item: 220000},
-            ]
-        },
-        {
-            OrderID: 3,
-            UserID: 10003,
-            FullName: 'Nguyen Van C',
-            Address: 'Số 53, Phan Đình Phùng',
-            OrderDate: '24/11/2024',
-            Sdt: '0123456789',
-            Status: '2',
-            TotalOrderItems:220000,
-            PaymentMethod: 'Chuyển khoản',
-            District: '1', //Huyện
+            District: '2', //Huyện
             Province: '1', //Tỉnh
             Ward: '3', // Phường
             OrderItems: [
-                {productId: 1, quantity: 1, img: 'assets/images/sanpham1.webp', name: 'Tôi thấy hoa vàng trên cỏ xanh',category: 'tuoitho', price: 99000, totalPrice1Item: 99000},
+                { productId: 31,quantity: 1, img: 'assets/images/sanpham31.webp', category: 'chualanh', name: 'trèo lên mái nhà để khóc', price: 99000, totalPrice1Item: 99000 },
+                { productId: 32,quantity: 1, img: 'assets/images/sanpham32.webp', category: 'chualanh', name: 'những kẻ lãng du', price: 220000, totalPrice1Item: 220000},
+            ]
+        },
+
+        {
+            OrderID: 3,
+            UserID: 10003,
+            FullName: 'Nguyễn Văn C',
+            Address: 'Số 8 Lê Lai',
+            OrderDate: '24/11/2024',
+            Sdt: '0123456789',
+            Status: '2',
+            TotalOrderItems:240000,
+            PaymentMethod: 'Chuyển khoản',
+            District: '4', //Huyện
+            Province: '1', //Tỉnh
+            Ward: '16', // Phường
+            OrderItems: [
+                { productId: 20,quantity: 1,img: 'assets/images/sanpham20.webp', category: 'lichsu', name: 'đàm đạo cùng Khổng Tử', price: 240000,totalPrice1Item: 240000},
             ]
         },
         {
             OrderID: 4,
             UserID: 10001,
-            FullName: 'Nguyen Van A',
+            FullName: 'Nguyễn Văn A',
+            Address: 'số 60 Nguyễn Tri Phương',
             OrderDate: '25/11/2024',
-            Address: 'Số 55, Lê Lợi',
             Sdt: '0123456789',
             Status: '2',
-            TotalOrderItems:220000,
-            PaymentMethod: 'Chuyển khoản',
+            TotalOrderItems:589000,
+            PaymentMethod: 'Thanh toán khi nhận hàng',
+            District: '1', //Huyện
+            Province: '1', //Tỉnh
+            Ward: '1', // Phường
+            OrderItems: [
+                { productId: 43,quantity: 1, img: 'assets/images/sanpham43.webp', category: 'tinhcam', name: 'Ngày xưa có một chuyện tình', price: 270000,totalPrice1Item:270000  },
+                { productId: 44,quantity: 1, img: 'assets/images/sanpham44.webp', category: 'lichsu', name: 'Vì sao Phật giáo giàu chân lý', price: 180000, totalPrice1Item: 180000  },
+                { productId: 45,quantity: 1, img: 'assets/images/sanpham45.webp', category: 'kynangsong', name: 'Thép đã tôi thế đấy', price: 139000,totalPrice1Item: 139000 }
+            ]
+        },
+        {
+            OrderID: 5,
+            UserID: 10002,
+            FullName: 'Nguyễn Văn B',
+            Address: 'Số 65 Lê Lợi',
+            OrderDate: '26/11/2024',
+            Sdt: '0123456789',
+            Status: '0',
+            TotalOrderItems:319000,
+            PaymentMethod: 'Thanh toán khi nhận hàng',
             District: '2', //Huyện
             Province: '1', //Tỉnh
-            Ward: '4', // Phường
+            Ward: '3', // Phường
             OrderItems: [
-                {productId: 40, quantity: 1, img: 'acest/temp/tmp.webp', name: 'Vẽ em bằng nỗi nhớ',category: 'tuoitho', price: 220000, totalPrice1Item: 220000},
+                { productId: 31,quantity: 1, img: 'assets/images/sanpham31.webp', category: 'chualanh', name: 'trèo lên mái nhà để khóc', price: 99000, totalPrice1Item: 99000 },
+                { productId: 32,quantity: 1, img: 'assets/images/sanpham32.webp', category: 'chualanh', name: 'những kẻ lãng du', price: 220000, totalPrice1Item: 220000},
             ]
-        }
+        },
     ];
     localStorage.setItem('orderList',JSON.stringify(order));
     }
@@ -748,17 +774,19 @@ function cap_nhat_data_doanh_thu_2() {
     var productIdMap = {};
 
     orderList.forEach(order => {
-        order.OrderItems.forEach(item => {
-            if (!productIdMap[item.productId]) {
-                productIdMap[item.productId] = [];
-            }
-            productIdMap[item.productId].push({
-                orderID: order.OrderID,
-                day_Order: order.OrderDate,
-                totalPrice: item.totalPrice1Item,
-                quantity: item.quantity
+        if (order.Status === '2') { // Thêm điều kiện kiểm tra Status
+            order.OrderItems.forEach(item => {
+                if (!productIdMap[item.productId]) {
+                    productIdMap[item.productId] = [];
+                }
+                productIdMap[item.productId].push({
+                    orderID: order.OrderID,
+                    day_Order: order.OrderDate,
+                    totalPrice: item.totalPrice1Item,
+                    quantity: item.quantity
+                });
             });
-        });
+        }
     });
 
     var result = [];
@@ -774,6 +802,7 @@ function cap_nhat_data_doanh_thu_2() {
     localStorage.setItem('Rev_Product', JSON.stringify(result));
     Sort_Rev_Product();
 }
+
 
 // Hàm để cập nhật dữ liệu thống kê theo sản phẩm theo ngày
 function cap_nhat_DT_san_pham_theo_ngay_va_in(){
@@ -980,11 +1009,22 @@ function Hien_ds_hd_theo_product(productId){
 
 function control_show_tk_1(){
     var control = document.getElementById('chon_Loai_TK').value;
+    var control2 = document.getElementById('chon_ThoiGian').value;
     if(control === '0'){
-        ShowKQ_Khach_hang();
+        if(control2 === '0'){
+            ShowKQ_Khach_hang();
+        }
+        else{
+            capnhat_DT_khach_theo_ngay_va_in();
+        }
     }
     else{
-        show_KQ_Product();
+        if(control2 === '0'){
+            show_KQ_Product();
+        }
+        else{
+            cap_nhat_DT_san_pham_theo_ngay_va_in();
+        }
     }
     return;
 }
@@ -1486,3 +1526,363 @@ function Xac_nhan_Chinh_Sua_User(idUser){
 }
 
 /*-----------------------------------------------XONG KHÁCH HÀNG------------------------------------------------------------------- */
+
+    function hienThiDonHang(orderList) {
+        const mainContent = document.getElementById("admin_content");
+
+        if (!orderList) {
+            orderList = JSON.parse(localStorage.getItem("orderList")) || [];
+        }
+
+        let contentHTML = `
+            <h1 class="centering">DANH SÁCH ĐƠN HÀNG</h1>
+            <div class="filter" id="filter">
+                <button id="filterBtn" class="filter-btn"><i class="fa-solid fa-filter"></i> Lọc</button>
+            </div>
+            <table id="orderTable">
+                <thead>
+                    <tr>
+                        <th class="centering">Mã đơn</th>
+                        <th>Khách hàng</th>
+                        <th class="centering">Ngày đặt</th>
+                        <th class="centering">Tổng tiền</th>
+                        <th class="centering">Trạng thái</th>
+                        <th class="centering">Chi tiết</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+
+        if (orderList.length === 0) {
+            contentHTML += `
+                    <tr>
+                        <td colspan="6" style="text-align: center;">Không có đơn hàng</td>
+                    </tr>
+            `;
+        } else {
+            for (let i = 0; i < orderList.length; i++) {
+                const order = orderList[i];
+                const totalAmount = order.OrderItems.reduce((total, item) => total + item.price * item.quantity, 0).toLocaleString('vi-VN');
+                contentHTML += `
+                    <tr>
+                        <td class="centering">${order.OrderID}</td>
+                        <td >${order.FullName}</td>
+                        <td class="centering">${order.OrderDate}</td>
+                        <td class="centering">${totalAmount} đ</td>
+                        <td class="centering">
+                            <select class="status-dropdown" data-order-id="${order.OrderID}" onchange="handleStatusChange(this)">
+                                <option value="0" ${order.Status === "0" ? "selected" : ""}>Chưa xử lý</option>
+                                <option value="1" ${order.Status === "1" ? "selected" : ""}>Đã xử lý</option>
+                                <option value="2" ${order.Status === "2" ? "selected" : ""}>Đã giao</option>
+                                <option value="3" ${order.Status === "3" ? "selected" : ""}>Đã hủy</option>
+                            </select>
+                        </td>
+                        <td class="centering">
+                            <button class="detail-button" onclick="xemChiTiet(${order.OrderID - 1})">Xem</button>
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        contentHTML += `
+                </tbody>
+            </table>
+        `;
+
+        mainContent.innerHTML = contentHTML;
+        initFilterModal();
+        const statusDropdowns = document.querySelectorAll('.status-dropdown');
+        for (let i = 0; i < statusDropdowns.length; i++) {
+            changeSelectColor(statusDropdowns[i]);
+        }
+    }
+
+
+    function handleStatusChange(selectElement) {
+        const orderId = selectElement.dataset.orderId; 
+        const newStatus = selectElement.value; 
+        const orders = JSON.parse(localStorage.getItem('orderList')) || [];
+        const order = orders[orderId-1];
+
+        if (!order) {
+            alert('Đơn hàng không tồn tại.');
+            selectElement.value = order ? order.Status : "0"; 
+            changeSelectColor(selectElement); 
+            return;
+        }
+
+        const currentStatus = order.Status;
+
+        if (currentStatus === "2" || currentStatus === "3") {
+            alert('Trạng thái hiện tại không thể thay đổi.');
+            selectElement.value = currentStatus; 
+            changeSelectColor(selectElement); 
+            return;
+        }
+
+        if (currentStatus === "1" && newStatus === "0") {
+            alert('Không thể thay đổi từ "Đã xử lý" về "Chưa xử lý".');
+            selectElement.value = currentStatus; 
+            changeSelectColor(selectElement); 
+            return;
+        }
+
+        const isConfirmed = confirm('Bạn có chắc chắn muốn thay đổi trạng thái đơn hàng không?');
+        if (!isConfirmed) {
+            selectElement.value = currentStatus; 
+            changeSelectColor(selectElement);
+            return;
+        }
+
+        order.Status = newStatus;
+        localStorage.setItem('orderList', JSON.stringify(orders));
+
+        changeSelectColor(selectElement);
+
+        alert('Trạng thái đơn hàng đã được cập nhật.');
+    }
+
+
+
+    // Hàm chuyển đổi trạng thái số thành chuỗi 
+    function getStatusLabel(status) {
+    switch (status) {
+        case "0": return "Chưa xử lý";
+        case "1": return "Đã xử lý";
+        case "2": return "Đã giao";
+        case "3": return "Đã hủy";
+        default: return "Không xác định";
+    }
+    }
+
+    // Thay đổi màu chữ theo trạng thái
+    function changeSelectColor(selectElement, orderId) {
+
+    const selectedValue = selectElement.value;
+
+    switch (selectedValue) {
+        case "0": 
+            selectElement.style.color = "#f0ad4e"; 
+            break;
+        case "1": 
+            selectElement.style.color = "#1565D6"; 
+            break;
+        case "2": 
+            selectElement.style.color = "#5cb85c";
+            break;
+        case "3": 
+            selectElement.style.color = "#d9534f"; 
+            break;
+        default:
+            selectElement.style.color = "#000000"; 
+            break;
+    }
+
+
+    }
+
+
+    // Hàm hiển thị chi tiết đơn hàng
+    function xemChiTiet(index) {
+    const orderList = JSON.parse(localStorage.getItem("orderList")) || [];
+    const order = orderList[index];
+
+    if (!order) {
+        alert("Đơn hàng không tồn tại.");
+        return;
+    }
+
+    const modal = document.getElementById("orderDetailModal");
+    const closeModal = document.getElementById("closeDetailModal");
+    const content = document.getElementById("orderDetailContent");
+
+    let details = `
+        <p><strong>Mã đơn hàng:</strong> ${index + 1}</p> 
+        <p><strong>Tên khách hàng:</strong> ${order.FullName}</p>
+        <p><strong>Số điện thoại:</strong> ${order.Sdt}</p>
+        <p><strong>Địa chỉ giao hàng:</strong> ${order.Address}</p>
+        <p><strong>Ngày đặt:</strong> ${order.OrderDate}</p>
+        <p><strong>Trạng thái:</strong> ${getStatusLabel(order.Status)}</p>
+        <h4><strong>Danh sách sản phẩm:</strong></h4>
+        <ul>
+    `;
+
+    order.OrderItems.forEach((item) => {
+        details += `<li>${item.name} - Số lượng: ${item.quantity} - Giá: ${item.price.toLocaleString('vi-VN')} đ</li>`;
+    });
+
+    const totalPrice = order.OrderItems.reduce((total, item) => total + item.price * item.quantity, 0);
+    details += `
+        </ul>
+        <p><strong>Tổng tiền:</strong> ${totalPrice.toLocaleString('vi-VN')} đ</p>
+    `;
+
+    content.innerHTML = details;
+    modal.style.display = "block";
+
+    closeModal.addEventListener("click", () => {
+        modal.style.display = "none";
+    });
+
+    window.addEventListener("click", event => {
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    });
+    }
+
+
+    function locDonHangTheoTrangThai(orderList, selectedStatus) {
+    if (selectedStatus === "" || selectedStatus === undefined) {
+        return orderList;
+    }
+
+    return orderList.filter(order => order.Status === selectedStatus);
+    }
+
+    // Hàm lọc danh sách đơn hàng theo ngày
+    function locDonHangTheoNgay(orderList, fromDate, toDate) {
+    if (!fromDate || !toDate) return orderList;
+
+    const from = convertToDateFormat(fromDate, true);
+    const to = convertToDateFormat(toDate, true);
+
+    return orderList.filter(order => {
+        const orderDate = convertToDateFormat(order.OrderDate);
+        return orderDate >= from && orderDate <= to;
+    });
+    }
+
+    // Hàm lọc đơn hàng theo địa chỉ
+    function locDonHangTheoDiaChi(orderList) {
+    const provinceId = document.getElementById('provinces').value;
+    const districtId = document.getElementById('districts').value;
+    const wardId = document.getElementById('wards').value;
+
+    return orderList.filter(order => {
+        const isProvinceMatch = provinceId ? provinceId === order.Province : true;
+        const isDistrictMatch = districtId ? districtId === order.District : true;
+        const isWardMatch = wardId ? wardId === order.Ward : true;
+        return isProvinceMatch && isDistrictMatch && isWardMatch;
+    });
+    }
+
+
+
+    // Hàm lọc và hiển thị đơn hàng
+    function filterOrders() {
+    const orderList = JSON.parse(localStorage.getItem("orderList")) || [];
+    const selectedStatus = document.getElementById("statusFilter").value;
+    const filterFromDate = document.getElementById("fromDate").value;
+    const filterToDate = document.getElementById("toDate").value;
+
+    let filteredOrders = locDonHangTheoTrangThai(orderList, selectedStatus);
+    filteredOrders = locDonHangTheoNgay(filteredOrders, filterFromDate, filterToDate);
+    filteredOrders = locDonHangTheoDiaChi(filteredOrders);
+
+    // Hiển thị danh sách đơn hàng đã lọc
+    hienThiDonHang(filteredOrders); 
+    }
+
+
+
+    // Hàm chuyển đổi ngày để đúng form so sánh
+    function convertToDateFormat(dateString, isFromDate = false) {
+    if (isFromDate) {
+        const [year, month, day] = dateString.split('/');
+        return new Date(`${month}/${day}/${year}`);
+    } else {
+        const [day, month, year] = dateString.split('/');
+        return new Date(`${month}/${day}/${year}`);
+    }
+    }
+
+    // Hàm mở/đóng modal lọc
+    function initFilterModal() {
+    const filterBtn = document.getElementById("filterBtn");
+    const filterModal = document.getElementById("filterModal");
+    const closeModal = document.getElementById("closeModal");
+    const confirmFilter = document.getElementById("confirmFilter");
+
+    filterBtn.addEventListener("click", () => {
+        filterModal.style.display = "block";
+    });
+
+    closeModal.addEventListener("click", () => {
+        filterModal.style.display = "none";
+    });
+
+    confirmFilter.addEventListener("click", () => {
+        filterOrders(); 
+        filterModal.style.display = "none";
+    });
+
+    window.addEventListener("click", (event) => {
+        if (event.target === filterModal) {
+            filterModal.style.display = "none";
+        }
+    });
+    }
+
+
+
+
+    // Hàm để khởi tạo các tỉnh vào dropdown
+    function populateProvinces() {
+    const provinces = JSON.parse(localStorage.getItem('Tinh_TP')) || [];
+    const provincesSelect = document.getElementById('provinces');
+
+    provincesSelect.innerHTML = '<option value="">Chọn Tỉnh/TP</option>'; // Reset dropdown
+
+    provinces.forEach(province => {
+        const option = document.createElement('option');
+        option.value = province.TinhID;
+        option.textContent = province.TinhName;
+        provincesSelect.appendChild(option);
+    });
+    }
+
+    // Hàm để hiển thị quận/huyện khi chọn tỉnh
+    function populateDistricts() {
+    const provinceId = document.getElementById('provinces').value;
+    const districts = JSON.parse(localStorage.getItem('Quan_Huyen')) || [];
+    const districtsSelect = document.getElementById('districts');
+
+    if (!provinceId) {
+        districtsSelect.innerHTML = '<option value="">Chọn Quận/Huyện</option>';
+        return;
+    }
+
+    const filteredDistricts = districts.filter(district => district.TinhID === provinceId);
+
+    districtsSelect.innerHTML = '<option value="">Chọn Quận/Huyện</option>'; // Reset dropdown
+    filteredDistricts.forEach(district => {
+        const option = document.createElement('option');
+        option.value = district.Quan_HuyenID;
+        option.textContent = district.Quan_HuyenName;
+        districtsSelect.appendChild(option);
+    });
+    }
+
+    // Hàm để hiển thị phường/xã khi chọn quận/huyện
+    function populateWards() {
+    const districtId = document.getElementById('districts').value;
+    const wards = JSON.parse(localStorage.getItem('Phuong_Xa')) || [];
+    const wardsSelect = document.getElementById('wards');
+
+    if (!districtId) {
+        wardsSelect.innerHTML = '<option value="">Chọn Phường/Xã</option>';
+        return;
+    }
+
+    const filteredWards = wards.filter(ward => ward.Quan_HuyenID === districtId);
+
+    wardsSelect.innerHTML = '<option value="">Chọn Phường / Xã</option>'; // Reset dropdown
+    filteredWards.forEach(ward => {
+        const option = document.createElement('option');
+        option.value = ward.PhuongID;
+        option.textContent = ward.PhuongName;
+        wardsSelect.appendChild(option);
+    });
+}

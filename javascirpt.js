@@ -1,4 +1,4 @@
- localStorage.removeItem("product");
+// localStorage.removeItem("product");
 function createProduct() {
     if (localStorage.getItem('product') === null) {
         var productArray = [
@@ -48,10 +48,9 @@ function createProduct() {
             { productId: 44, src: 'assets/images/sanpham44.webp', category: 'lichsu', name: 'Vì sao Phật giáo giàu chân lý', price: 180000 },
             { productId: 45, src: 'assets/images/sanpham45.webp', category: 'kynangsong', name: 'Thép đã tôi thế đấy', price: 139000 }
         ];
-
+        // productArray[1]=null;
         localStorage.setItem('product', JSON.stringify(productArray));
     }
-
 }
 
 function createproductincart(){
@@ -433,7 +432,7 @@ function findObjectByProperty(objects, property, value) {
         // Đảm bảo nút 'close' đã tồn tại trong DOM và sau đó thêm sự kiện
         const closeButton = document.getElementById('close1');
         if (closeButton != null) {
-            closeButton.addEventListener('click', function() {
+            closeButton.addEventListener('click', function () {
                 productinfo.style.display = 'none';
             });
         } else {
@@ -441,33 +440,31 @@ function findObjectByProperty(objects, property, value) {
         }
     
         const hieuungthemvaogio = document.getElementById('addtocart1');
-       
+    
         // Đảm bảo nút 'addtocart1' đã tồn tại trong DOM và sau đó thêm sự kiện
         if (hieuungthemvaogio != null) {
-            hieuungthemvaogio.addEventListener('click', function() {
-                const userAccount = localStorage.getItem("USER");
+            hieuungthemvaogio.addEventListener('click', function () {
+                const userAccount = localStorage.getItem("userLogin");
     
                 if (userAccount == null) {
                     // Nếu người dùng chưa đăng nhập, hiển thị modal yêu cầu đăng nhập
                     document.querySelector(".modal").style.display = "flex";
                 } else {
                     // Nếu người dùng đã đăng nhập, thực hiện thêm sản phẩm vào giỏ hàng
-                    const users = JSON.parse(userAccount); // Lấy danh sách người dùng từ localStorage
-                    const user = users.find(u => u.UserID === 10001); // Lấy thông tin người dùng hiện tại theo UserID (hoặc theo điều kiện của bạn)
+                    const user = JSON.parse(userAccount); // Lấy thông tin người dùng từ localStorage
                     addToCart(user, productid); // Thêm sản phẩm vào giỏ
                 }
             });
         }
     }
-    
     // Hàm để thêm sản phẩm vào giỏ hàng
     function addToCart(user, productid) {
         // Lấy danh sách giỏ hàng từ localStorage
         const existingCarts = JSON.parse(localStorage.getItem("shoppingCarts")) || [];
-        
+    
         // Kiểm tra xem giỏ hàng của người dùng đã tồn tại chưa
-        let userCart = existingCarts.find(cart => cart.userID === user.UserID);
-        
+        let userCart = existingCarts.find(cart => cart.UserID === user.UserID);
+    
         if (!userCart) {
             // Nếu giỏ hàng của người dùng chưa tồn tại, tạo mới giỏ hàng với mảng sản phẩm trống
             userCart = {
@@ -476,7 +473,7 @@ function findObjectByProperty(objects, property, value) {
             };
             existingCarts.push(userCart); // Thêm giỏ hàng mới vào danh sách giỏ hàng
         }
-        
+    
         // Kiểm tra nếu sản phẩm đã có trong giỏ hàng, nếu chưa thêm vào
         const productExists = userCart.items.find(item => item.productId === productid);
         if (!productExists) {
@@ -489,18 +486,20 @@ function findObjectByProperty(objects, property, value) {
         }
     }
     
+    
 var sanpham=document.getElementById('sanpham');
 var themsanpham=document.querySelector('.themsanpham');
-sanpham.onclick = function() {
+sanpham.onclick = function () {
     // Thực hiện hành động khi phần tử được nhấn
 themsanpham.style.display="block";
 const mangsanpham = JSON.parse(localStorage.getItem('product'));
 let s='';
 for(let i=0;i<mangsanpham.length;i++){
-    s+=`<div class="chuasanpham"><img class="anhsanpham"src="./assets/images/sanpham${i+1}.webp" alt=""><div class="tensanpham">${mangsanpham[i].name}</div><div class="suasanpham"><i class="fa-solid fa-gear"></i></div><div class="xoasanpham"><i class="fa-solid fa-xmark"></i></div></div>`;
+    s+=`<div class="chuasanpham"><img class="anhsanpham"src="${mangsanpham[i].src}" alt=""><div class="tensanpham">${mangsanpham[i].name}</div><div class="suasanpham" onclick="${mangsanpham[i].productId}"><i class="fa-solid fa-gear"></i></div><div class="xoasanpham" onclick="removeProductById(${mangsanpham[i].productId})"><i class="fa-solid fa-xmark"></i></div></div>`;
 }
 s+=  `<div class ="them" onclick="themsp()">Thêm sản phẩm</div>`;
 themsanpham.innerHTML=s;
+// addRemoveEventListener();
 };
 function thoatra(){
     themsanpham.style.display="none";
@@ -542,10 +541,10 @@ document.getElementById("addProductButton").onclick = function() {
     reader.onload = function(event) {
         var newProduct = {
             productId: (JSON.parse(localStorage.getItem('product')) || []).length + 1,
-            src: event.target.result,  // Đường dẫn ảnh
+            src:'assets/images/comingsoon.png',  // Đường dẫn ảnh
             category: bookCategory,
             name: bookName,
-            price: parseFloat(bookPrice)
+            price: parseInt(bookPrice)
         };
 
         var products = JSON.parse(localStorage.getItem('product')) || [];
@@ -555,7 +554,16 @@ document.getElementById("addProductButton").onclick = function() {
         alert("Sản phẩm đã được thêm thành công!");
         renderProductList();
     };
-
+    const mangsanpham = JSON.parse(localStorage.getItem('product'));
+    let s='';
+    for(let i=0;i<mangsanpham.length;i++){
+        s+=`<div class="chuasanpham"><img class="anhsanpham"src="${mangsanpham[i].src}" alt=""><div class="tensanpham">${mangsanpham[i].name}</div><div class="suasanpham" onclick="removeProductById(${mangsanpham[i].productId})"><i class="fa-solid fa-gear"></i></div><div class="xoasanpham"onclick="removeProductById(${mangsanpham[i].productId})"><i class="fa-solid fa-xmark"></i></div></div>`;
+    }
+    s+=  `<div class ="them" onclick="themsp()">Thêm sản phẩm</div>`;
+    themsanpham.innerHTML=s;
+    // addRemoveEventListener();
+    var outra=document.querySelector('.themsuaxoa');
+outra.style.display="none";
     reader.readAsDataURL(imageFile); // Đọc ảnh dưới dạng Data URL
 };
 function outra1(){
@@ -563,3 +571,67 @@ var thoathem=document.querySelector('.thoatthem');
 var outra=document.querySelector('.themsuaxoa');
 outra.style.display="none";
 }
+// function addRemoveEventListener() {
+//     // Lấy tất cả các phần tử có class 'xoasanpham'
+//     const deleteButtons = document.querySelectorAll('.xoasanpham');
+
+//     // Duyệt qua tất cả các phần tử và thêm sự kiện 'click'
+//     deleteButtons.forEach(button => {
+//         button.addEventListener('click', function() {
+//             // Lấy productId từ thuộc tính data-product-id
+//             const productId = this.getAttribute('data-product-id');
+            
+//             // Gọi hàm xóa sản phẩm
+//             removeProductById(productId);
+//         });
+//     });
+// }
+function removeProductById(productId1) {
+    // Hiển thị hộp thoại xác nhận
+    const isConfirmed = confirm("Bạn có chắc muốn xóa sản phẩm này?");
+    
+    // Nếu người dùng chọn OK (xác nhận), tiến hành xóa
+    if (isConfirmed) {
+        let products = JSON.parse(localStorage.getItem('product')) || [];
+        
+        // Lọc mảng để loại bỏ sản phẩm có productId trùng khớp
+        products = products.filter(product => product.productId !== productId1);
+        localStorage.removeItem("product");
+        // Lưu lại mảng sau khi xóa sản phẩm
+        localStorage.setItem('product', JSON.stringify(products));
+        
+        // Thông báo đã xóa thành công
+        alert("Sản phẩm đã được xóa!");
+        const mangsanpham = JSON.parse(localStorage.getItem('product'));
+let s='';
+for(let i=0;i<mangsanpham.length;i++){
+    s+=`<div class="chuasanpham"><img class="anhsanpham"src="${mangsanpham[i].src}" alt=""><div class="tensanpham">${mangsanpham[i].name}</div><div class="suasanpham" onclick="${mangsanpham[i].productId}"><i class="fa-solid fa-gear"></i></div><div class="xoasanpham" onclick="removeProductById(${mangsanpham[i].productId})"><i class="fa-solid fa-xmark"></i></div></div>`;
+}
+s+=  `<div class ="them" onclick="themsp()">Thêm sản phẩm</div>`;
+themsanpham.innerHTML=s;
+        // renderProductList();
+    }
+
+
+
+}
+
+// // Hàm để cập nhật danh sách sản phẩm trong giao diện
+// function renderProductList() {
+//     const mangsanpham = JSON.parse(localStorage.getItem('product')) || [];
+//     let s = '';
+
+//     for (let i = 0; i < mangsanpham.length; i++) {
+//         s += `<div class="chuasanpham">
+//                 <img class="anhsanpham" src="${mangsanpham[i].src}" alt="">
+//                 <div class="tensanpham">${mangsanpham[i].name}</div>
+//                 <div class="suasanpham"><i class="fa-solid fa-gear"></i></div>
+//                 <div class="xoasanpham">
+//                     <i class="fa-solid fa-xmark" onclick="removeProductById(${mangsanpham[i].productId})"></i>
+//                 </div>
+//               </div>`;
+//     }
+
+//     s += `<div class="them" onclick="themsp()">Thêm sản phẩm</div>`;
+//     themsanpham.innerHTML = s;
+// }
