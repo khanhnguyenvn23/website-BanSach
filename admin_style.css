@@ -1426,7 +1426,7 @@ body{
     color:#003CBF;
 }
 .xoasanpham{
-    padding-left:100px;
+    margin-left:100px;
     font-size: 45px;
     color:red;
     padding-top:44px;
@@ -1444,16 +1444,19 @@ body{
     background-color: #FFBF00;
     cursor: pointer;
 }
-.themsuaxoa{
-    width:50%;
-    height:100%;
+.themsuaxoa {
+    width: 50%;
+    height: 100%;
     position: fixed;
-    top:0;
-    left:25%;
-    right:25%;
-    background-color: #59a2c9;
+    top: 0;
+    left: 25%;
+    right: 25%;
+    background-color: rgb(245,245,250);/* Xanh dương chuyển sang xanh đậm hơn */
     z-index: 10000000000000;
+    border: 5px solid #007bff; /* Màu xanh đậm hơn cho đường viền */
+    border-radius: 15px;
 }
+
 .themmoi{
     display:block;
 }
@@ -1497,4 +1500,11 @@ margin-top: 20px;
 }
 .xoasp{
     z-index: 1000000000;
+}
+.a111{
+font-family: 'Times New Roman', Times, serif;
+margin-left: 230px;
+color:#000;
+font-size: 40px;
+margin-top: 10px;
 }

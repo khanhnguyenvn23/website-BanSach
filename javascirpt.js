@@ -1,4 +1,4 @@
-// localStorage.removeItem("product");
+// localStorage.clear();
 function createProduct() {
     if (localStorage.getItem('product') === null) {
         var productArray = [
@@ -495,7 +495,7 @@ themsanpham.style.display="block";
 const mangsanpham = JSON.parse(localStorage.getItem('product'));
 let s='';
 for(let i=0;i<mangsanpham.length;i++){
-    s+=`<div class="chuasanpham"><img class="anhsanpham"src="${mangsanpham[i].src}" alt=""><div class="tensanpham">${mangsanpham[i].name}</div><div class="suasanpham" onclick="${mangsanpham[i].productId}"><i class="fa-solid fa-gear"></i></div><div class="xoasanpham" onclick="removeProductById(${mangsanpham[i].productId})"><i class="fa-solid fa-xmark"></i></div></div>`;
+    s+=`<div class="chuasanpham"><img class="anhsanpham"src="${mangsanpham[i].src}" alt=""><div class="tensanpham">${mangsanpham[i].name}</div><div class="suasanpham" onclick="suasp(${mangsanpham[i].productId})"><i class="fa-solid fa-gear"></i></div><div class="xoasanpham" onclick="removeProductById(${mangsanpham[i].productId})"><i class="fa-solid fa-xmark"></i></div></div>`;
 }
 s+=  `<div class ="them" onclick="themsp()">Thêm sản phẩm</div>`;
 themsanpham.innerHTML=s;
@@ -557,7 +557,7 @@ document.getElementById("addProductButton").onclick = function() {
     const mangsanpham = JSON.parse(localStorage.getItem('product'));
     let s='';
     for(let i=0;i<mangsanpham.length;i++){
-        s+=`<div class="chuasanpham"><img class="anhsanpham"src="${mangsanpham[i].src}" alt=""><div class="tensanpham">${mangsanpham[i].name}</div><div class="suasanpham" onclick="removeProductById(${mangsanpham[i].productId})"><i class="fa-solid fa-gear"></i></div><div class="xoasanpham"onclick="removeProductById(${mangsanpham[i].productId})"><i class="fa-solid fa-xmark"></i></div></div>`;
+        s+=`<div class="chuasanpham"><img class="anhsanpham"src="${mangsanpham[i].src}" alt=""><div class="tensanpham">${mangsanpham[i].name}</div><div class="suasanpham" onclick="suasp(${mangsanpham[i].productId})"><i class="fa-solid fa-gear"></i></div><div class="xoasanpham"onclick="removeProductById(${mangsanpham[i].productId})"><i class="fa-solid fa-xmark"></i></div></div>`;
     }
     s+=  `<div class ="them" onclick="themsp()">Thêm sản phẩm</div>`;
     themsanpham.innerHTML=s;
@@ -605,7 +605,7 @@ function removeProductById(productId1) {
         const mangsanpham = JSON.parse(localStorage.getItem('product'));
 let s='';
 for(let i=0;i<mangsanpham.length;i++){
-    s+=`<div class="chuasanpham"><img class="anhsanpham"src="${mangsanpham[i].src}" alt=""><div class="tensanpham">${mangsanpham[i].name}</div><div class="suasanpham" onclick="${mangsanpham[i].productId}"><i class="fa-solid fa-gear"></i></div><div class="xoasanpham" onclick="removeProductById(${mangsanpham[i].productId})"><i class="fa-solid fa-xmark"></i></div></div>`;
+    s+=`<div class="chuasanpham"><img class="anhsanpham"src="${mangsanpham[i].src}" alt=""><div class="tensanpham">${mangsanpham[i].name}</div><div class="suasanpham" onclick="suasp(${mangsanpham[i].productId})"><i class="fa-solid fa-gear"></i></div><div class="xoasanpham" onclick="removeProductById(${mangsanpham[i].productId})"><i class="fa-solid fa-xmark"></i></div></div>`;
 }
 s+=  `<div class ="them" onclick="themsp()">Thêm sản phẩm</div>`;
 themsanpham.innerHTML=s;
@@ -635,3 +635,51 @@ themsanpham.innerHTML=s;
 //     s += `<div class="them" onclick="themsp()">Thêm sản phẩm</div>`;
 //     themsanpham.innerHTML = s;
 // }
+// Hàm để lưu thông tin sản phẩm khi sửa
+ function suasp(productId) {
+    
+    var themsanpham=document.querySelector('.themsuaxoa');
+    themsanpham.style.display="block";
+    document.getElementById("addProductButton").onclick = function() {
+    var bookName = document.getElementById("bookName").value;
+    var bookPrice = document.getElementById("bookPrice").value;
+    var bookCategory = document.getElementById("bookCategory").value;
+    if (!bookName || !bookPrice || !bookCategory) {
+        alert("Vui lòng điền đầy đủ thông tin sản phẩm!");
+        return;
+    }
+
+    // Gọi hàm để sửa thông tin sản phẩm
+    saveProductData(productId, bookName, bookPrice, bookCategory);
+};}
+
+// Hàm để lưu thông tin sản phẩm (chỉ sửa)
+function saveProductData(productId, bookName, bookPrice, bookCategory) {
+    var products = JSON.parse(localStorage.getItem('product')) || [];
+
+    // Tìm sản phẩm theo productId và cập nhật
+    var productIndex = products.findIndex(product => product.productId == productId);
+    
+    if (productIndex !== -1) {
+        // Giữ nguyên ảnh cũ, chỉ thay đổi tên, giá, và danh mục
+        products[productIndex] = {
+            productId: productId,
+            src: products[productIndex].src, // Giữ nguyên ảnh (không thay đổi src)
+            category: bookCategory,
+            name: bookName,
+            price: parseInt(bookPrice)
+        };
+        
+        // Lưu lại danh sách sản phẩm vào localStorage
+        localStorage.setItem('product', JSON.stringify(products));
+
+        alert("Sản phẩm đã được sửa thành công!");
+        // Đóng form sửa sau khi hoàn tất
+        document.querySelector(".themsuaxoa").style.display = "none";
+
+        // Cập nhật lại danh sách sản phẩm (nếu cần thiết)
+        renderProductList();  // Cập nhật giao diện (nếu bạn cần hiển thị lại danh sách)
+    } else {
+        alert("Không tìm thấy sản phẩm để sửa.");
+    }
+}

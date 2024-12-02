@@ -1828,61 +1828,119 @@ function Xac_nhan_Chinh_Sua_User(idUser){
 
 
 
-    // Hàm để khởi tạo các tỉnh vào dropdown
-    function populateProvinces() {
-    const provinces = JSON.parse(localStorage.getItem('Tinh_TP')) || [];
-    const provincesSelect = document.getElementById('provinces');
+//     // Hàm để khởi tạo các tỉnh vào dropdown
+//     function populateProvinces() {
+//     const provinces = JSON.parse(localStorage.getItem('Tinh_TP')) || [];
+//     const provincesSelect = document.getElementById('provinces');
 
-    provincesSelect.innerHTML = '<option value="">Chọn Tỉnh/TP</option>'; // Reset dropdown
+//     provincesSelect.innerHTML = '<option value="">Chọn Tỉnh/TP</option>'; // Reset dropdown
 
-    provinces.forEach(province => {
-        const option = document.createElement('option');
-        option.value = province.TinhID;
-        option.textContent = province.TinhName;
-        provincesSelect.appendChild(option);
-    });
-    }
+//     provinces.forEach(province => {
+//         const option = document.createElement('option');
+//         option.value = province.TinhID;
+//         option.textContent = province.TinhName;
+//         provincesSelect.appendChild(option);
+//     });
+//     }
 
-    // Hàm để hiển thị quận/huyện khi chọn tỉnh
-    function populateDistricts() {
-    const provinceId = document.getElementById('provinces').value;
-    const districts = JSON.parse(localStorage.getItem('Quan_Huyen')) || [];
-    const districtsSelect = document.getElementById('districts');
+//     // Hàm để hiển thị quận/huyện khi chọn tỉnh
+//     function populateDistricts() {
+//     const provinceId = document.getElementById('provinces').value;
+//     const districts = JSON.parse(localStorage.getItem('Quan_Huyen')) || [];
+//     const districtsSelect = document.getElementById('districts');
 
-    if (!provinceId) {
-        districtsSelect.innerHTML = '<option value="">Chọn Quận/Huyện</option>';
-        return;
-    }
+//     if (!provinceId) {
+//         districtsSelect.innerHTML = '<option value="">Chọn Quận/Huyện</option>';
+//         return;
+//     }
 
-    const filteredDistricts = districts.filter(district => district.TinhID === provinceId);
+//     const filteredDistricts = districts.filter(district => district.TinhID === provinceId);
 
-    districtsSelect.innerHTML = '<option value="">Chọn Quận/Huyện</option>'; // Reset dropdown
-    filteredDistricts.forEach(district => {
-        const option = document.createElement('option');
-        option.value = district.Quan_HuyenID;
-        option.textContent = district.Quan_HuyenName;
-        districtsSelect.appendChild(option);
-    });
-    }
+//     districtsSelect.innerHTML = '<option value="">Chọn Quận/Huyện</option>'; // Reset dropdown
+//     filteredDistricts.forEach(district => {
+//         const option = document.createElement('option');
+//         option.value = district.Quan_HuyenID;
+//         option.textContent = district.Quan_HuyenName;
+//         districtsSelect.appendChild(option);
+//     });
+//     }
 
-    // Hàm để hiển thị phường/xã khi chọn quận/huyện
-    function populateWards() {
-    const districtId = document.getElementById('districts').value;
-    const wards = JSON.parse(localStorage.getItem('Phuong_Xa')) || [];
-    const wardsSelect = document.getElementById('wards');
+//     // Hàm để hiển thị phường/xã khi chọn quận/huyện
+//     function populateWards() {
+//     const districtId = document.getElementById('districts').value;
+//     const wards = JSON.parse(localStorage.getItem('Phuong_Xa')) || [];
+//     const wardsSelect = document.getElementById('wards');
 
-    if (!districtId) {
-        wardsSelect.innerHTML = '<option value="">Chọn Phường/Xã</option>';
-        return;
-    }
+//     if (!districtId) {
+//         wardsSelect.innerHTML = '<option value="">Chọn Phường/Xã</option>';
+//         return;
+//     }
 
-    const filteredWards = wards.filter(ward => ward.Quan_HuyenID === districtId);
+//     const filteredWards = wards.filter(ward => ward.Quan_HuyenID === districtId);
 
-    wardsSelect.innerHTML = '<option value="">Chọn Phường / Xã</option>'; // Reset dropdown
-    filteredWards.forEach(ward => {
-        const option = document.createElement('option');
-        option.value = ward.PhuongID;
-        option.textContent = ward.PhuongName;
-        wardsSelect.appendChild(option);
-    });
+//     wardsSelect.innerHTML = '<option value="">Chọn Phường / Xã</option>'; // Reset dropdown
+//     filteredWards.forEach(ward => {
+//         const option = document.createElement('option');
+//         option.value = ward.PhuongID;
+//         option.textContent = ward.PhuongName;
+//         wardsSelect.appendChild(option);
+//     });
+// }
+
+
+
+
+
+function showProvinces() {
+    let s = '<option value="0">Chọn Tỉnh / Thành phố</option>';
+    let dataTinh_TP = JSON.parse(localStorage.getItem('Tinh_TP'));
+    dataTinh_TP.forEach(tinhTP => {
+        s += `
+            <option value ="${tinhTP.TinhID}">${tinhTP.TinhName}</option>
+        `;
+    })
+    document.querySelector('#provinces').innerHTML = s;
+}
+showProvinces();
+
+// Lấy Id tỉnh để hiển thị huyện thuộc tỉnh đó
+function getProvinceID() {
+    let provinceID = document.querySelector('#provinces').value;
+    showDistricts(provinceID);
+}
+
+// Hiển thị huyện sau khi chọn tỉnh
+function showDistricts(provinceID) {
+    let s = '<option value="0">Chọn Quận / Huyện</option>';
+    let dataQuan_Huyen = JSON.parse(localStorage.getItem('Quan_Huyen'));
+    dataQuan_Huyen.forEach(quanHuyen => {
+        if (quanHuyen.TinhID === provinceID)
+            s += `
+            <option value="${quanHuyen.Quan_HuyenID}">${quanHuyen.Quan_HuyenName}</option>
+        `;
+    })
+
+    document.querySelector('#districts').innerHTML = s;
+}
+
+// Lấy id huyện
+function getDistrictID() {
+    let districtID = document.querySelector('#districts').value;
+    showWards(districtID);
+}
+
+
+// Hiển thị xã sau khi chọn 
+function showWards(districtID) {
+    let s = '<option value="0">Chọn Phường / Xã</option>';
+    let dataPhuong_Xa = JSON.parse(localStorage.getItem('Phuong_Xa'));
+    dataPhuong_Xa.forEach(phuongXa => {
+        if (phuongXa.Quan_HuyenID === districtID) {
+            s += `
+                <option value="${phuongXa.PhuongID}">${phuongXa.PhuongName}</option>
+            `;
+        }
+    })
+
+    document.querySelector('#wards').innerHTML = s;
 }

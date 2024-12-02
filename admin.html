@@ -171,24 +171,25 @@
                                 <!-- Lọc theo địa chỉ -->
                                 <div class="filter-item">
                                     <label for="provinces">Tỉnh/Thành:</label>
-                                    <select id="provinces">
-                                        <option value="" disabled selected>Chọn tỉnh/thành</option>
-                                        <!-- Các tỉnh sẽ được điền động -->
+                                    <select id="provinces"onclick = "getProvinceID()" >
+                                        <option value="" >Chọn tỉnh/thành</option>
+                                        
+                                        
                                     </select>
                                 </div>
 
                                 <div class="filter-item">
                                     <label for="districts">Quận/Huyện:</label>
-                                    <select id="districts"> -->
-                                        <option value="" disabled selected>Chọn quận/huyện</option>
+                                    <select id="districts" onclick = "getDistrictID()" > 
+                                        <option value="">Chọn quận/huyện</option>
                                         <!-- Các quận sẽ được điền động -->
                                     </select>
                                 </div>
 
                                 <div class="filter-item">
                                     <label for="wards">Phường/Xã:</label>
-                                    <select id="wards">
-                                        <option value="" disabled selected>Chọn phường/xã</option>
+                                    <select id="wards" >
+                                        <option value="">Chọn phường/xã</option>
                                         <!-- Các phường sẽ được điền động -->
                                     </select>
                                 </div>
@@ -217,7 +218,7 @@
                     <div class="chuasanpham"><img class="anhsanpham"src="./assets/images/sanpham1.webp" alt=""><div class="tensanpham">tôi thấy hoa vàng trên cỏ xanh</div><div class="suasanpham"><i class="fa-solid fa-gear"></i></div><div class="xoasanpham"><i class="fa-solid fa-xmark"></i></div></div> -->
                         
                             </div>
-                            <div class="themsuaxoa">
+                            <div class="themsuaxoa"><h1 class="a111">THÊM VÀ SỬA</h1>
                                 <div>
                                     <div class="themmoi anh1">
                                         <input type="file" id="imageFile">

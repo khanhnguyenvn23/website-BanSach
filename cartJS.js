@@ -986,15 +986,16 @@ function cancelOrder(orderID) {
         if (orderIDHistory === orderID) {
             order.querySelector('.orderStatus').textContent = "Đã hủy";
             // Đổi status trong LocalStorage!!!
+            alert("hello");
             updateCancelStatus(orderID);
         }
     })
 }
 function updateCancelStatus(orderID) {
     const orderList = JSON.parse(localStorage.getItem("orderList"));
-    console.log(orderList);
+    let currentOrderID = parseInt(orderID);
     orderList.forEach(order => {
-        if (orderID === order.OrderID) {
+        if (currentOrderID === order.OrderID) {
             order.Status = "3";
             localStorage.setItem("orderList", JSON.stringify(orderList));
             alert("Đã Hủy Thành Công Đơn Hàng " + orderID);
