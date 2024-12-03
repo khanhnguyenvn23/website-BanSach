@@ -356,6 +356,8 @@ if (confirmPassword == 0) {
 if (Sdt.length == 0) {
   document.querySelector('.form-message-phone').innerHTML = 'Vui lòng nhập vào số điện thoại';
   return;
+
+  
 } else if (!/^\d{10}$/.test(Sdt)) {
   document.querySelector('.form-message-phone').innerHTML = 'Vui lòng nhập vào số điện thoại 10 số';
   document.getElementById('phone-number').value = '';

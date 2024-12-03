@@ -236,6 +236,7 @@ function showWards(districtID) {
         }
     })
 
+    
     document.querySelector('#wards').innerHTML = s;
 }
 

@@ -501,6 +501,7 @@ s+=  `<div class ="them" onclick="themsp()">Thêm sản phẩm</div>`;
 themsanpham.innerHTML=s;
 // addRemoveEventListener();
 };
+
 function thoatra(){
     themsanpham.style.display="none";
 }

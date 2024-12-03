@@ -1326,6 +1326,8 @@ input[type=number] {
     margin-bottom: 5px;
     display: inline-block;
     font-size: 14px;
+    
+
     font-weight: 500;
 }
 .address {
@@ -1342,3 +1344,8 @@ input[type=number] {
     width: 100%; /* Mỗi cột chiếm toàn bộ chiều rộng */
   }
 } 
+
+#logo_1{
+  width: 160px;
+  height: 40px;
+}

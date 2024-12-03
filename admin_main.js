@@ -6,6 +6,7 @@ window.onload = function(){
     KhoiTaoDonHang();
     KhoiTaoCacDiaChi();
     KhoiTaoAdmin();
+    
     Login_Admin();
     initFilterModal();   
 };
